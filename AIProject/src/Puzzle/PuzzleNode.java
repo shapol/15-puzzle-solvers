@@ -3,14 +3,16 @@ package Puzzle;
 import java.awt.Point;
 import java.util.Vector;
 
-public class PuzzleNode implements Comparable{
+public class PuzzleNode implements Comparable {
 
     private PuzzleNode theParent = null; /*This Node Parent*/
 
     private int[][] puzzle;
     private Point spaceCell;
-    private int movesFromStart = 0;     /*Node Depth (Optimize to Minimum That Number)*/ 
+    private int movesFromStart = 0;     /*Node Depth (Optimize to Minimum That Number)*/
+
     private int movesToGoal = 0;        /*Estimate based on The heuristic*/
+
     private Vector<Point> validMoves;   /*Space Cell can (Valid Move) move to any of this Points*/
 
 
@@ -40,17 +42,27 @@ public class PuzzleNode implements Comparable{
     private Vector<Point> generateValidMoves() {
         throw new UnsupportedOperationException("Not yet implemented");
     }
-    
-    public Vector<PuzzleNode> expandNode(){
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-    
-    public int getMovesToGoal() {
+
+    public Vector<PuzzleNode> expandNode() {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    public int getMovesToGoal() {
+        return PuzzleGame.getManahtanDistance(this);
+    }
+
     public int compareTo(Object o) {
-        throw new UnsupportedOperationException("Not supported yet.");
+
+        PuzzleNode other = (PuzzleNode) o;
+        for (int i = 0; i < puzzle.length; i++) {
+            for (int j = 0; j < puzzle.length; j++) {
+                int[][] otherPuzzle = other.getPuzzle();
+                if (this.puzzle[i][j] != otherPuzzle[i][j]) {
+                    return 1; /*Diffrent*/
+                }
+            }
+        }
+        return 0; /*The Same*/
     }
 
     public int getMovesFromStart() {
@@ -72,5 +84,4 @@ public class PuzzleNode implements Comparable{
     public void setPuzzle(int[][] puzzle) {
         this.puzzle = puzzle;
     }
-   
 }
