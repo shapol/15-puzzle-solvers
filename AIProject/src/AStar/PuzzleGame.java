@@ -36,7 +36,8 @@ public class PuzzleGame {
         }
         
         /*Create Puzzle*/
-        this.root = new PuzzleNode(puzzle, null, spaceCell);
+        this.root = new PuzzleNode(puzzle, null, spaceCell);                
+        PuzzleGame.prevPos.clear();
         
         /*Create Goal State*/
         int[][] goalPuzzle = {
@@ -71,6 +72,8 @@ public class PuzzleGame {
         return distance;
     }
 
+    
+    
     /*Missing*/
     public void solveGame(){
         

@@ -120,6 +120,15 @@ public class PuzzleNode implements Comparable {
         return puzzle;
     }
 
+    public int getNodeDepth(){
+        int res = 0;
+        PuzzleNode node = this;
+        while (node != null) {
+            node = node.theParent;
+            res++;
+        }
+        return res;
+    }
     
     
 }
