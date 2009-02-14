@@ -65,4 +65,12 @@ public class PuzzleNode implements Comparable{
         this.movesToGoal = movesToGoal;
     }
 
+    public int[][] getPuzzle() {
+        return puzzle;
+    }
+
+    public void setPuzzle(int[][] puzzle) {
+        this.puzzle = puzzle;
+    }
+   
 }

@@ -20,6 +20,8 @@ public class PuzzleGame {
     
     /*In our tree of puzzle States this will hold the solution puzzle Node-State*/
     private PuzzleNode currSolutionNode = null;
+    
+    private int[][][] manhatanDistance;
 
     public PuzzleGame(int[][] puzzle, Point spaceCell) throws Exception {
 
@@ -27,6 +29,7 @@ public class PuzzleGame {
             throw new Exception("InValid Game Width != 15");
         }
         this.root = new PuzzleNode(puzzle, null, spaceCell);
+        initializeManhatanDistance();
     }
 
     public void solveGame(Algorithm algo) {
@@ -59,5 +62,30 @@ public class PuzzleGame {
     public boolean isDone(PuzzleNode currNode){
         throw new UnsupportedOperationException("Not supported yet.");
     }
+    
+    public void initializeManhatanDistance(){
+        manhatanDistance = new int[gameWidth][4][4];
+        for(int value=0;value<gameWidth;value++){
+            for(int i=0;i<4;i++){
+                for(int j=0;j<4;j++){
+                    manhatanDistance[value][i][j] = Math.abs(value/4 -i)+ Math.abs(value%4-j);
+                }
+            }
+        }       
+    }
+    
+    public int getManahtanDistance(PuzzleNode puzzleNode){
+        int distance = 0;
+        int[][] puzzle = puzzleNode.getPuzzle();
+        int[] puzzleRaw;
+        for(int i=0;i<puzzle.length;i++){
+            puzzleRaw = puzzle[i];
+            for (int j=0;j<puzzleRaw.length;j++){
+                distance += manhatanDistance[puzzle[i][j]][i][j];
+            }
+        }        
+        return distance;        
+    }
+
         
 }
