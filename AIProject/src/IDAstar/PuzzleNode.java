@@ -1,7 +1,6 @@
 package IDAstar;
 
 import java.awt.Point;
-import java.util.Vector;
 
 public class PuzzleNode implements Comparable {
 
@@ -12,9 +11,6 @@ public class PuzzleNode implements Comparable {
     private int movesFromStart = 0;     /*Node Depth (Optimize to Minimum That Number)*/
 
     private int movesToGoal = 0;        /*Estimate based on The heuristic*/
-
-    private Vector<Point> validMoves;   /*Space Cell can (Valid Move) move to any of this Points*/
-
 
     public PuzzleNode(int[][] puzzle, PuzzleNode theParent, Point spaceCell) {
 
@@ -27,53 +23,19 @@ public class PuzzleNode implements Comparable {
         /*Init The Space Cell postion*/
         this.spaceCell = spaceCell;
 
-        /*Calculate Current Valid moves*/
-        this.validMoves = generateValidMoves();
-
         /*Update Current movesFromStart*/
         if (this.theParent != null) {
             movesFromStart = this.theParent.movesFromStart + 1;
         }
-
-        /*Estimate moves to goal from current State*/
-        this.movesToGoal = getMovesToGoal();
-    }
-
-    private Vector<Point> generateValidMoves() {
-
-        /*The SpaceCell can move either left , right , up , down*/
-        Vector<Point> result = new Vector<Point>();
-
-        if (spaceCell.x - 1 >= 0) {
-            result.add(new Point(spaceCell.x - 1, spaceCell.y));
-        }
-        if (spaceCell.x + 1 < PuzzleGame.gameWidth) {
-            result.add(new Point(spaceCell.x + 1, spaceCell.y));
-        }
-        if (spaceCell.y - 1 >= 0) {
-            result.add(new Point(spaceCell.x, spaceCell.y - 1));
-        }
-        if (spaceCell.y + 1 < PuzzleGame.gameWidth) {
-            result.add(new Point(spaceCell.x, spaceCell.y + 1));
-        }
-        return result;
-    }
-
-    public Vector<PuzzleNode> expandNode() {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    public int getMovesToGoal() {
-        return PuzzleGame.getManahtanDistance(this);
-    }
-
-    public int compareTo(Object o) {
+    } 
+    
+   public int compareTo(Object o) {
 
         PuzzleNode other = (PuzzleNode) o;
-        for (int i = 0; i < puzzle.length; i++) {
-            for (int j = 0; j < puzzle.length; j++) {
+        for (int i = 0; i < getPuzzle().length; i++) {
+            for (int j = 0; j < getPuzzle().length; j++) {
                 int[][] otherPuzzle = other.getPuzzle();
-                if (this.puzzle[i][j] != otherPuzzle[i][j]) {
+                if (this.getPuzzle()[i][j] != otherPuzzle[i][j]) {
                     return 1; /*Diffrent*/
                 }
             }
@@ -89,16 +51,12 @@ public class PuzzleNode implements Comparable {
         this.movesFromStart = movesFromStart;
     }
 
-    public void setMovesToGoal(int movesToGoal) {
-        this.movesToGoal = movesToGoal;
-    }
-
     public int[][] getPuzzle() {
         return puzzle;
     }
 
     public void setPuzzle(int[][] puzzle) {
-        this.puzzle = puzzle;
+        this.setPuzzle(puzzle);
     }
 
     @Override
@@ -112,8 +70,8 @@ public class PuzzleNode implements Comparable {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 67 * hash + (this.puzzle != null ? this.puzzle.hashCode() : 0);
-        hash = 67 * hash + (this.spaceCell != null ? this.spaceCell.hashCode() : 0);
+        hash = 67 * hash + (this.getPuzzle() != null ? this.getPuzzle().hashCode() : 0);
+        hash = 67 * hash + (this.getSpaceCell() != null ? this.getSpaceCell().hashCode() : 0);
         return hash;
     }
 
@@ -133,11 +91,12 @@ public class PuzzleNode implements Comparable {
         }    
 }
 
-    public int[][] makeMoveOnPuzzle(Point moveToMake){        
-        int[][] result = (int[][])puzzle.clone(); /*Copy Current*/
-        result[spaceCell.x][spaceCell.y] = puzzle[moveToMake.x][moveToMake.y];
-        result[moveToMake.x][moveToMake.y] = 0;
-        return result;        
+    public Point getSpaceCell() {
+        return spaceCell;
+    }
+
+    public void setSpaceCell(Point spaceCell) {
+        this.spaceCell = spaceCell;
     }
     
     
