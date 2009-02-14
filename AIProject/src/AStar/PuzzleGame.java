@@ -4,11 +4,10 @@ import java.awt.Point;
 import java.util.Vector;
 
 public class PuzzleGame {
-              
-                    
+
     public static int puzzleDimension = 4; /*4X4 Puzzle*/
-    public static int maxValue = 15; 
-    
+
+    public static int maxValue = 15;
     private PuzzleNode root;
     private int nodesSearched = 0; /*The number of nodes we searched so far*/
 
@@ -16,25 +15,30 @@ public class PuzzleGame {
     This keeps us from moving the same tile back and forth ,and forces the moves taken 
     to advance towrds the goal. */
     public static Vector<PuzzleNode> prevPos = new Vector<PuzzleNode>();
-        
     private PuzzleNode currSolutionNode = null; /* this will hold the Current Node*/
-    
+
     private static int[][][] manhatanDistance; /*Matrix of pre-calculated manhatan Distances*/
-        
+
     private PuzzleNode goalNode; /*Final Goal*/
 
-            
-    
+
     public PuzzleGame(int[][] puzzle) throws Exception {
 
+        /*Validate Size*/
         if ((puzzle.length != puzzleDimension) | (puzzle[0].length != puzzleDimension)) {
             throw new Exception("InValid Game Width != 15");
         }
+        
+        /*Make Sure it has Space in it And Get It*/
         Point spaceCell = getSpacePoint(puzzle);
         if (spaceCell == null) {
             throw new Exception("where is the space?  :-) ");
         }
+        
+        /*Create Puzzle*/
         this.root = new PuzzleNode(puzzle, null, spaceCell);
+        
+        /*Create Goal State*/
         int[][] goalPuzzle = {
             {0, 1, 2, 3},
             {4, 5, 6, 7},
@@ -42,20 +46,18 @@ public class PuzzleGame {
             {12, 13, 14, 15}
         };
         goalNode = new PuzzleNode(goalPuzzle, null, new java.awt.Point(0, 0));
+                
+        /*Init The Manhatan Distances Matrix*/
         initializeManhatanDistance();
     }
 
-    public void solveGame() {
-       
-    }
-    
     public boolean isDone(PuzzleNode currNode) {
         if (currNode.compareTo(goalNode) == 0) {
             return true;
         }
         return false;
-    }    
-    
+    }
+
     public static int getManahtanDistance(PuzzleNode puzzleNode) {
         int distance = 0;
         int[][] puzzle = puzzleNode.getPuzzle();
@@ -68,7 +70,13 @@ public class PuzzleGame {
         }
         return distance;
     }
-    
+
+    /*Missing*/
+    public void solveGame(){
+        
+    }
+
+
     
     
     private Point getSpacePoint(int[][] puzzle) {
@@ -81,7 +89,7 @@ public class PuzzleGame {
         }
         return null;
     }
-                                        
+
     private void initializeManhatanDistance() {
         PuzzleGame.manhatanDistance = new int[maxValue][puzzleDimension][puzzleDimension];
         for (int value = 0; value < maxValue; value++) {
@@ -92,5 +100,4 @@ public class PuzzleGame {
             }
         }
     }
-            
 }

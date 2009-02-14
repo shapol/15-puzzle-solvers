@@ -36,6 +36,7 @@ public class PuzzleNode implements Comparable {
         this.movesToGoal = getMovesToGoal();
     }
             
+    
     public Vector<Point> generateValidMoves() {
 
         /*The SpaceCell can move either left , right , up , down*/
@@ -83,6 +84,8 @@ public class PuzzleNode implements Comparable {
         return result;        
     }
             
+    
+    
     public int compareTo(Object o) {
 
         PuzzleNode other = (PuzzleNode) o;
