@@ -53,4 +53,16 @@ public class PuzzleNode implements Comparable{
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public int getMovesFromStart() {
+        return movesFromStart;
+    }
+
+    public void setMovesFromStart(int movesFromStart) {
+        this.movesFromStart = movesFromStart;
+    }
+
+    public void setMovesToGoal(int movesToGoal) {
+        this.movesToGoal = movesToGoal;
+    }
+
 }
