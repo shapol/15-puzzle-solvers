@@ -26,10 +26,13 @@ public class Main {
                 {12, 2, 8, 10}
             }
         };
-        int puzzleNumber = 0;
+        int puzzleNumber = 0;        
         try {
+            
+            /*Astar Solver*/
             PuzzleGame puzzleGame = new PuzzleGame(puzzels[puzzleNumber]);
-            puzzleGame.solveGame();
+            puzzleGame.solveGame();                                    
+            
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
