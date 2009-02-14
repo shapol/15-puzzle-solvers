@@ -21,7 +21,7 @@ public class PuzzleGame {
     /*In our tree of puzzle States this will hold the solution puzzle Node-State*/
     private PuzzleNode currSolutionNode = null;
     
-    private int[][][] manhatanDistance;
+    private static int[][][] manhatanDistance;
 
     public PuzzleGame(int[][] puzzle, Point spaceCell) throws Exception {
 
@@ -74,18 +74,18 @@ public class PuzzleGame {
         }       
     }
     
-    public int getManahtanDistance(PuzzleNode puzzleNode){
+    public static int getManahtanDistance(PuzzleNode puzzleNode){
         int distance = 0;
         int[][] puzzle = puzzleNode.getPuzzle();
         int[] puzzleRaw;
         for(int i=0;i<puzzle.length;i++){
             puzzleRaw = puzzle[i];
             for (int j=0;j<puzzleRaw.length;j++){
-                distance += manhatanDistance[puzzle[i][j]][i][j];
+                distance += manhatanDistance[puzzle[i][j]-1][i][j];
             }
         }        
         return distance;        
     }
 
-        
+            
 }
