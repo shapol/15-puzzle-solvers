@@ -56,4 +56,8 @@ public class PuzzleGame {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    private boolean isDone(PuzzleNode currNode){
+        return true;
+    }
+    
 }
