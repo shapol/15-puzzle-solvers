@@ -1,7 +1,5 @@
 package Puzzle;
 
-import AStar.PuzzleGame;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -26,12 +24,17 @@ public class Main {
                 {12, 2, 8, 10}
             }
         };
-        int puzzleNumber = 0;        
+        int puzzleNumber = 1;        
         try {
             
             /*Astar Solver*/
-            PuzzleGame puzzleGame = new PuzzleGame(puzzels[puzzleNumber]);
-            puzzleGame.solveGame();                                    
+       //     AStar.PuzzleGame puzzleGame = new AStar.PuzzleGame(puzzels[puzzleNumber]);
+      //      puzzleGame.solveGame();                                    
+            
+            /*IDAStar Solver*/
+            IDAstar.IDAStar idaStar = new IDAstar.IDAStar(puzzels[puzzleNumber]);
+            idaStar.solveGame();
+           // System.out.println(idaStar.getManahtanDistance(puzzels[2]));
             
         } catch (Exception ex) {
             System.out.println(ex.getMessage());

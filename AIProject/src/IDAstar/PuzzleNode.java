@@ -67,14 +67,7 @@ public class PuzzleNode implements Comparable {
         return (this.compareTo(other) == 0);
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 67 * hash + (this.getPuzzle() != null ? this.getPuzzle().hashCode() : 0);
-        hash = 67 * hash + (this.getSpaceCell() != null ? this.getSpaceCell().hashCode() : 0);
-        return hash;
-    }
-
+ 
     public boolean isVisitedBefore() {
 
         /*If its the solution Then its ok to stuck on it*/
@@ -97,6 +90,22 @@ public class PuzzleNode implements Comparable {
 
     public void setSpaceCell(Point spaceCell) {
         this.spaceCell = spaceCell;
+    }
+    
+    @Override
+    public String toString(){
+        String result = "";
+        int[] puzzleRaw;
+        for(int i=0;i<puzzle.length;i++){
+            puzzleRaw = puzzle[i];
+            result += "| ";
+            for(int j=0;j<puzzleRaw.length;j++){
+                result += puzzleRaw[j] +" ";
+            }
+            result += "|\n";
+        }
+        
+        return result;
     }
     
     
