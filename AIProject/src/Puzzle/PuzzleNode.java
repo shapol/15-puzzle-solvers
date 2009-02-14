@@ -40,23 +40,23 @@ public class PuzzleNode implements Comparable {
     }
 
     private Vector<Point> generateValidMoves() {
-        
-        /*The SpaceCell can move either left , right , up , down*/        
+
+        /*The SpaceCell can move either left , right , up , down*/
         Vector<Point> result = new Vector<Point>();
-        
-        if (spaceCell.x-1>=0)
-            result.add(new Point(spaceCell.x-1,spaceCell.y));
-        
-         if (spaceCell.x+1<PuzzleGame.gameWidth)
-              result.add(new Point(spaceCell.x+1,spaceCell.y));
-        
-         if (spaceCell.y-1>=0)
-             result.add(new Point(spaceCell.x,spaceCell.y-1));
-        
-         if (spaceCell.y+1<PuzzleGame.gameWidth)
-             result.add(new Point(spaceCell.x,spaceCell.y+1));
-             
-        return result;                
+
+        if (spaceCell.x - 1 >= 0) {
+            result.add(new Point(spaceCell.x - 1, spaceCell.y));
+        }
+        if (spaceCell.x + 1 < PuzzleGame.gameWidth) {
+            result.add(new Point(spaceCell.x + 1, spaceCell.y));
+        }
+        if (spaceCell.y - 1 >= 0) {
+            result.add(new Point(spaceCell.x, spaceCell.y - 1));
+        }
+        if (spaceCell.y + 1 < PuzzleGame.gameWidth) {
+            result.add(new Point(spaceCell.x, spaceCell.y + 1));
+        }
+        return result;
     }
 
     public Vector<PuzzleNode> expandNode() {
@@ -116,4 +116,29 @@ public class PuzzleNode implements Comparable {
         hash = 67 * hash + (this.spaceCell != null ? this.spaceCell.hashCode() : 0);
         return hash;
     }
+
+    public boolean isVisitedBefore() {
+
+        /*If its the solution Then its ok to stuck on it*/
+        if (this.movesToGoal == 0) {
+            return false;
+        }
+
+        boolean isVisited = PuzzleGame.prevPos.contains(this);
+        if (!isVisited) {
+            PuzzleGame.prevPos.add(this); /*Not visited Then add it And return False*/
+            return false;
+        } else {
+            return true; /*Visited Before*/
+        }    
+}
+
+    public int[][] makeMoveOnPuzzle(Point moveToMake){
+        
+        int[][] result = (int[][])puzzle.clone(); /*Copy Current*/
+        return result;
+        
+    }
+    
+    
 }
