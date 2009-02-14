@@ -3,7 +3,7 @@ package Puzzle;
 import java.awt.Point;
 import java.util.Vector;
 
-public class PuzzleNode {
+public class PuzzleNode implements Comparable{
 
     private PuzzleNode theParent = null; /*This Node Parent*/
 
@@ -43,6 +43,10 @@ public class PuzzleNode {
 
     private int getMovesToGoal() {
         throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    public int compareTo(Object o) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }
