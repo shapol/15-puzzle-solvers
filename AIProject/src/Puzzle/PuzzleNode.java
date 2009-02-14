@@ -84,4 +84,20 @@ public class PuzzleNode implements Comparable {
     public void setPuzzle(int[][] puzzle) {
         this.puzzle = puzzle;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        return (this.compareTo(other) == 0);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 67 * hash + (this.puzzle != null ? this.puzzle.hashCode() : 0);
+        hash = 67 * hash + (this.spaceCell != null ? this.spaceCell.hashCode() : 0);
+        return hash;
+    }
 }
