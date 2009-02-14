@@ -7,7 +7,7 @@ public class PuzzleGame {
 
     public static enum Algorithm {
 
-        AStar, IRDAStar
+        AStar, IDAStar
     }
     private PuzzleNode root;
     private final int gameWidth = 15;
@@ -36,9 +36,9 @@ public class PuzzleGame {
                 solveGameAStar();
                 break;
 
-            case IRDAStar:
-                System.out.println("Solving With IRDAStar");
-                solveGameIRDAStar();
+            case IDAStar:
+                System.out.println("Solving With IDAStar");
+                solveGameIDAStar();
                 break;
 
             default:
@@ -51,7 +51,7 @@ public class PuzzleGame {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    private void solveGameIRDAStar() {
+    private void solveGameIDAStar() {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
