@@ -8,7 +8,7 @@ public class PuzzleNode implements Comparable {
     private PuzzleNode theParent = null; /*This Node Parent*/
     private int[][] puzzle;
     private Point spaceCell;
-    private int movesFromStart = 0;     /*Node Depth (Optimize to Minimum That Number)*/
+    private int movesFromStart = 0;     /*Steps Made Up To Here (Optimize to Minimum That Number)*/
     private int movesToGoal = 0;        /*Estimate based on The heuristic*/
     private Vector<Point> validMoves;   /*Space Cell can (Valid Move) move to any of this Points*/
 
