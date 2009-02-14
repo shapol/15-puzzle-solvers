@@ -41,6 +41,8 @@ public class PuzzleNode implements Comparable {
 
     private Vector<Point> generateValidMoves() {
         
+        /*The SpaceCell can move either left , right , up , down*/
+        
         Vector<Point> result = new Vector<Point>();
         
         if (spaceCell.x-1>=0)
