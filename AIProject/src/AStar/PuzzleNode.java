@@ -129,6 +129,10 @@ public class PuzzleNode implements Comparable {
         }
         return res;
     }
+
+    public int getMovesFromStart() {
+        return movesFromStart;
+    }
     
     
 }
