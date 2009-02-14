@@ -6,9 +6,9 @@ import java.util.Vector;
 public class PuzzleGame {
 
     public static enum Algorithm {
-
         AStar, IDAStar
     }
+    
     private PuzzleNode root;
     private final int gameWidth = 15;
     private int nodesSearched = 0; /*The number of nodes we searched so far*/
