@@ -1,4 +1,4 @@
-package Puzzle;
+package IDAstar;
 
 import java.awt.Point;
 import java.util.Vector;
