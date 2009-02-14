@@ -40,7 +40,11 @@ public class PuzzleNode implements Comparable{
     private Vector<Point> generateValidMoves() {
         throw new UnsupportedOperationException("Not yet implemented");
     }
-
+    
+    public Vector<PuzzleNode> expandNode(){
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+    
     private int getMovesToGoal() {
         throw new UnsupportedOperationException("Not yet implemented");
     }
