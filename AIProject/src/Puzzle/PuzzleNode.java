@@ -47,11 +47,15 @@ public class PuzzleNode implements Comparable {
             result.add(new Point(spaceCell.x-1,spaceCell.y));
         
          if (spaceCell.x+1<PuzzleGame.gameWidth)
-             return result;
+              result.add(new Point(spaceCell.x+1,spaceCell.y));
         
-        return result;
+         if (spaceCell.y-1>=0)
+             result.add(new Point(spaceCell.x,spaceCell.y-1));
         
-        
+         if (spaceCell.y+1<PuzzleGame.gameWidth)
+             result.add(new Point(spaceCell.x,spaceCell.y+1));
+             
+        return result;                
     }
 
     public Vector<PuzzleNode> expandNode() {
