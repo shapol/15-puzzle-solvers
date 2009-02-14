@@ -142,6 +142,7 @@ public class PuzzleGame {
         int puzzleNumber = 0;
         try {
             PuzzleGame puzzleGame = new PuzzleGame(puzzels[puzzleNumber]);
+            puzzleGame.solveGame(Algorithm.AStar);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
