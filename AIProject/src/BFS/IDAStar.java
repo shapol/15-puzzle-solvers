@@ -49,7 +49,7 @@ public class IDAStar {
         return PuzzleGame.getManahtanDistance(puzzleNode);
     }
 
-    public int ida(PuzzleNode root) {
+    public int IDA(PuzzleNode root) {
         _isFinished = false;
         int threshold = h(root);
         PuzzleNode node;
