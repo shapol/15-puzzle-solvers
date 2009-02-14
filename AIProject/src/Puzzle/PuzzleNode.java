@@ -133,11 +133,11 @@ public class PuzzleNode implements Comparable {
         }    
 }
 
-    public int[][] makeMoveOnPuzzle(Point moveToMake){
-        
+    public int[][] makeMoveOnPuzzle(Point moveToMake){        
         int[][] result = (int[][])puzzle.clone(); /*Copy Current*/
-        return result;
-        
+        result[spaceCell.x][spaceCell.y] = puzzle[moveToMake.x][moveToMake.y];
+        result[moveToMake.x][moveToMake.y] = 0;
+        return result;        
     }
     
     
