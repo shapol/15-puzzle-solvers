@@ -45,7 +45,7 @@ public class PuzzleNode implements Comparable{
         throw new UnsupportedOperationException("Not yet implemented");
     }
     
-    private int getMovesToGoal() {
+    public int getMovesToGoal() {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
