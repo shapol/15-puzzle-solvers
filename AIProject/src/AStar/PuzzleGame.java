@@ -1,23 +1,10 @@
 package AStar;
 
-import AStar.PuzzleNode;
 import java.awt.Point;
 import java.util.Vector;
 
 public class PuzzleGame {
-
-    public PuzzleNode getCurrSolutionNode() {
-        return currSolutionNode;
-    }
-
-    public void setCurrSolutionNode(PuzzleNode currSolutionNode) {
-        this.currSolutionNode = currSolutionNode;
-    }
-
-    public static enum Algorithm {
-
-        AStar, IDAStar
-    }
+              
     private PuzzleNode root;
     public static final int gameWidth = 15;
     public static int puzzleDimension = 4;
@@ -28,11 +15,17 @@ public class PuzzleGame {
     This keeps us from moving the same tile back and forth ,and forces the moves taken 
     to advance towrds the goal. */
     public static Vector<PuzzleNode> prevPos = new Vector<PuzzleNode>();
-    /*In our tree of puzzle States this will hold the solution puzzle Node-State*/
+    
+    /*In our tree of puzzle States  - this will hold the Current solution puzzle Node-State*/
     private PuzzleNode currSolutionNode = null;
+    
     private static int[][][] manhatanDistance;
-    private PuzzleNode goalNode;
+    
+    /*Final Goal*/
+    private PuzzleNode goalNode; 
 
+    
+    
     public PuzzleGame(int[][] puzzle) throws Exception {
 
         if ((puzzle.length != gameWidth) | (puzzle[0].length != gameWidth)) {
@@ -64,33 +57,10 @@ public class PuzzleGame {
         return null;
     }
 
-    public void solveGame(Algorithm algo) {
-
-        switch (algo) {
-            case AStar:
-                System.out.println("Solving With AStar");
-                solveGameAStar();
-                break;
-
-            case IDAStar:
-                System.out.println("Solving With IDAStar");
-                solveGameIDAStar();
-                break;
-
-            default:
-                System.out.println("Algorithm Not Found");
-                break;
-        }
+    public void solveGame() {
+       
     }
-
-    private void solveGameAStar() {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    private void solveGameIDAStar() {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
+           
     public boolean isDone(PuzzleNode currNode) {
         if (currNode.compareTo(goalNode) == 0) {
             return true;
@@ -125,4 +95,6 @@ public class PuzzleGame {
         }
         return distance;
     }
+    
+    
 }
