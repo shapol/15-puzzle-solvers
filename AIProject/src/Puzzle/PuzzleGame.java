@@ -23,7 +23,7 @@ public class PuzzleGame {
 
     /* we keep the previous positions and insure we never get there again.
     This keeps us from moving the same tile back and forth ,and forces the moves taken 
-    to advance towrds the goal. Each time we do binary search on it */
+    to advance towrds the goal. */
     public static Vector<PuzzleNode> prevPos = new Vector<PuzzleNode>();
     /*In our tree of puzzle States this will hold the solution puzzle Node-State*/
     private PuzzleNode currSolutionNode = null;
