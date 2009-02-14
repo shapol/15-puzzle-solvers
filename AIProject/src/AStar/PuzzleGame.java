@@ -9,16 +9,15 @@ public class PuzzleGame {
 
     public static int maxValue = 15;
     private PuzzleNode root;
+    
     private int nodesSearched = 0; /*The number of nodes we searched so far*/
-
     /* we keep the previous positions and insure we never get there again.
     This keeps us from moving the same tile back and forth ,and forces the moves taken 
     to advance towrds the goal. */
     public static Vector<PuzzleNode> prevPos = new Vector<PuzzleNode>();
     private PuzzleNode currSolutionNode = null; /* this will hold the Current Node*/
 
-    private static int[][][] manhatanDistance; /*Matrix of pre-calculated manhatan Distances*/
-
+    private static int[][][] manhatanDistance; /*Matrix of pre-calculated manhatan Distances*/    
     private PuzzleNode goalNode; /*Final Goal*/
 
 
