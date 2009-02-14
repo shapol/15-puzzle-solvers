@@ -10,8 +10,7 @@ public class AStar {
     public AStar() {
         openList = new Vector<PuzzleNode>();
     }
-    
-    
+        
     private int sortNodes(PuzzleNode first, PuzzleNode second) {
         
         int firstValue = first.getMovesToGoal()+first.getMovesFromStart();
