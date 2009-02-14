@@ -18,7 +18,7 @@ public class PuzzleGame {
         AStar, IDAStar
     }
     private PuzzleNode root;
-    private final int gameWidth = 15;
+    public static final int gameWidth = 15;
     private int nodesSearched = 0; /*The number of nodes we searched so far*/
 
     /* we keep the previous positions and insure we never get there again.

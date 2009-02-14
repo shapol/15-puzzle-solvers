@@ -40,7 +40,18 @@ public class PuzzleNode implements Comparable {
     }
 
     private Vector<Point> generateValidMoves() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        
+        Vector<Point> result = new Vector<Point>();
+        
+        if (spaceCell.x-1>=0)
+            result.add(new Point(spaceCell.x-1,spaceCell.y));
+        
+         if (spaceCell.x+1<PuzzleGame.gameWidth)
+             return result;
+        
+        return result;
+        
+        
     }
 
     public Vector<PuzzleNode> expandNode() {
