@@ -5,6 +5,14 @@ import java.util.Vector;
 
 public class PuzzleGame {
 
+    public PuzzleNode getCurrSolutionNode() {
+        return currSolutionNode;
+    }
+
+    public void setCurrSolutionNode(PuzzleNode currSolutionNode) {
+        this.currSolutionNode = currSolutionNode;
+    }
+
     public static enum Algorithm {
         AStar, IDAStar
     }

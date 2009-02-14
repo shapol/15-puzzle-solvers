@@ -7,7 +7,6 @@ import java.util.Vector;
 public class IDAStar {
 
     private PuzzleGame puzzleGame;
-    private PuzzleNode _currentNode;
     private boolean _isFinished;
 
     public IDAStar(PuzzleGame puzzleGame) {
@@ -43,11 +42,11 @@ public class IDAStar {
     }
     
     public int g(PuzzleNode puzzleNode){
-        
+        return puzzleNode.getMovesFromStart();
     }
 
     public int h(PuzzleNode puzzleNode) {
-        return puzzleGame.getManahtanDistance(puzzleNode);
+        return PuzzleGame.getManahtanDistance(puzzleNode);
     }
 
     public int ida(PuzzleNode root) {
