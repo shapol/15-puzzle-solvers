@@ -30,11 +30,15 @@ public class PuzzleGame {
     private static int[][][] manhatanDistance;
     private PuzzleNode goalNode;
 
-    public PuzzleGame(int[][] puzzle, Point spaceCell) throws Exception {
+    public PuzzleGame(int[][] puzzle) throws Exception {
 
         if ((puzzle.length != gameWidth) | (puzzle[0].length != gameWidth)) {
             throw new Exception("InValid Game Width != 15");
         }
+       Point spaceCell = getSpacePoint(puzzle);
+       if(spaceCell==null){
+           throw new Exception("where is the space?  :-) ");
+       }
         this.root = new PuzzleNode(puzzle, null, spaceCell);
         int[][] goalPuzzle = {
             {0, 1, 2, 3},
@@ -44,6 +48,17 @@ public class PuzzleGame {
         };
         goalNode = new PuzzleNode(goalPuzzle, null, new java.awt.Point(0, 0));
         initializeManhatanDistance();
+    }
+    
+    private Point getSpacePoint(int[][] puzzle){
+        for(int i=0;i<4;i++){
+            for (int j=0;j<4;j++){
+                if(puzzle[i][j]==0){
+                    return new java.awt.Point(i,j);
+                }
+            }
+        }
+        return null;
     }
 
     public void solveGame(Algorithm algo) {
@@ -103,4 +118,36 @@ public class PuzzleGame {
         }
         return distance;
     }
+    
+    
+    
+    
+    public static void main(String[] args){
+        
+        int[][][] puzzels = 
+        {
+            //1
+            {{1,9,3,7}, 
+              {4,0,6,15},
+              {5,13,2,11},
+              {8,12,14,10}
+            },
+            //2
+            {{1,3,6,7}, 
+             {13,14,9,15},
+             {4,0,8,11},
+             {12,5,2,10}
+            }
+        };
+        int puzzleNumber = 0;
+        try {
+            PuzzleGame puzzleGame = new PuzzleGame(puzzels[puzzleNumber]);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        
+    }
+    
+    
 }
