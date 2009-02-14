@@ -2,11 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Puzzle;
 
 import AStar.PuzzleGame;
-import AStar.PuzzleGame.Algorithm;
+
 
 /**
  *
@@ -14,7 +13,9 @@ import AStar.PuzzleGame.Algorithm;
  */
 public class Main {
 
-     public static void main(String[] args) {
+    
+
+    public static void main(String[] args) {
 
         int[][][] puzzels = {
             //Puzzle 0
@@ -39,12 +40,13 @@ public class Main {
         int puzzleNumber = 0;
         try {
             PuzzleGame puzzleGame = new PuzzleGame(puzzels[puzzleNumber]);
-            puzzleGame.solveGame(Algorithm.AStar);
+            puzzleGame.solveGame();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
 
 
     }
+    
     
 }
