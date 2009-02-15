@@ -1,7 +1,5 @@
 package Puzzle;
 
-import IDAstar.PuzzleNode;
-
 public class PuzzleGame {
 
     public static final int gameSlotsNumber = 15;
@@ -18,24 +16,6 @@ public class PuzzleGame {
                 }
             }
         }
-    }
-
-    public static int getManahtanDistance(PuzzleNode puzzleNode) {
-        int distance = 0;
-        int[][] puzzle = puzzleNode.getPuzzle();
-        int[] puzzleRaw;
-        int tValue;
-        for (int i = 0; i < puzzle.length; i++) {
-            puzzleRaw = puzzle[i];
-            for (int j = 0; j < puzzleRaw.length; j++) {
-                tValue = puzzle[i][j];
-                if (tValue != 0) {
-                    distance += manhatanDistance[tValue][i][j];
-                }
-
-            }
-        }
-        return distance;
     }
 
     public static int getManahtanDistance(int[][] puzzle) {
