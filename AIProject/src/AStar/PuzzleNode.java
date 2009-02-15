@@ -1,18 +1,22 @@
 package AStar;
 
 import java.awt.Point;
+import java.util.LinkedList;
 import java.util.Vector;
 
 public class PuzzleNode implements Comparable {
 
     private PuzzleNode theParent = null; /*This Node Parent*/
+
     private int[][] puzzle;
     private Point spaceCell;
     private int movesFromStart = 0;     /*Steps Made Up To Here (Optimize to Minimum That Number)*/
-    private int movesToGoal = 0;        /*Estimate based on The heuristic*/
-    private Vector<Point> validMoves;   /*Space Cell can (Valid Move) move to any of this Points*/
 
-    
+    private int movesToGoal = 0;        /*Estimate based on The heuristic*/
+
+    private LinkedList<Point> validMoves;   /*Space Cell can (Valid Move) move to any of this Points*/
+
+
     public PuzzleNode(int[][] puzzle, PuzzleNode theParent, Point spaceCell) {
 
         /*Init The puzzle*/
@@ -35,13 +39,11 @@ public class PuzzleNode implements Comparable {
         /*Estimate moves to goal from current State*/
         this.movesToGoal = getMovesToGoal();
     }
-            
-    
-    
-    public Vector<Point> generateValidMoves() {
+
+    public LinkedList<Point> generateValidMoves() {
 
         /*The SpaceCell can move either left , right , up , down*/
-        Vector<Point> result = new Vector<Point>();
+        LinkedList<Point> result = new LinkedList<Point>();
 
         if (spaceCell.x - 1 >= 0) {
             result.add(new Point(spaceCell.x - 1, spaceCell.y));
@@ -57,7 +59,30 @@ public class PuzzleNode implements Comparable {
         }
         return result;
     }
-   
+
+    public int[][] makeMoveOnPuzzle(Point moveToMake) {
+        int[][] result = (int[][]) getPuzzle().clone(); /*Copy Current*/
+        result[spaceCell.x][spaceCell.y] = getPuzzle()[moveToMake.x][moveToMake.y];
+        result[moveToMake.x][moveToMake.y] = 0;
+        return result;
+    }
+
+    public PuzzleNode getMyNextSibling() {
+
+        if (this.theParent == null) {
+            return null;
+        }
+        LinkedList<Point> parentValidMoves = this.theParent.getValidMoves();
+        while (parentValidMoves.size() > 0) {
+            Point move = parentValidMoves.remove();
+            PuzzleNode mySib = new PuzzleNode(theParent.makeMoveOnPuzzle(move), theParent, move);
+            if (!mySib.isVisitedBefore()) {
+                return mySib;
+            }
+        }
+        return null;
+    }
+
     public int getMovesToGoal() {
         return PuzzleGame.getManahtanDistance(this);
     }
@@ -75,16 +100,9 @@ public class PuzzleNode implements Comparable {
             return false;
         } else {
             return true; /*Visited Before*/
-        }    
-}
-
-    public int[][] makeMoveOnPuzzle(Point moveToMake){        
-        int[][] result = (int[][])getPuzzle().clone(); /*Copy Current*/
-        result[spaceCell.x][spaceCell.y] = getPuzzle()[moveToMake.x][moveToMake.y];
-        result[moveToMake.x][moveToMake.y] = 0;
-        return result;        
+        }
     }
-                            
+
     public int compareTo(Object o) {
 
         PuzzleNode other = (PuzzleNode) o;
@@ -98,7 +116,7 @@ public class PuzzleNode implements Comparable {
         }
         return 0; /*The Same*/
     }
-          
+
     @Override
     public boolean equals(Object other) {
         if (other == this) {
@@ -119,7 +137,7 @@ public class PuzzleNode implements Comparable {
         return puzzle;
     }
 
-    public int getNodeDepth(){
+    public int getNodeDepth() {
         int res = 0;
         PuzzleNode node = this;
         while (node != null) {
@@ -132,6 +150,8 @@ public class PuzzleNode implements Comparable {
     public int getMovesFromStart() {
         return movesFromStart;
     }
-    
-    
+
+    public LinkedList<Point> getValidMoves() {
+        return validMoves;
+    }
 }
