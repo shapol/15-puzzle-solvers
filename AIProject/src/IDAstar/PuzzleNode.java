@@ -4,29 +4,20 @@ import java.awt.Point;
 
 public class PuzzleNode implements Comparable {
 
-    private PuzzleNode theParent = null; /*This Node Parent*/
-
     private int[][] puzzle;
     private Point spaceCell;
     private int movesFromStart = 0;     /*Node Depth (Optimize to Minimum That Number)*/
 
-    private int movesToGoal = 0;        /*Estimate based on The heuristic*/
 
-    public PuzzleNode(int[][] puzzle, PuzzleNode theParent, Point spaceCell) {
+    public PuzzleNode(int[][] puzzle, int movesFromStart,Point spaceCell) {
 
         /*Init The puzzle*/
         this.puzzle = puzzle;
 
-        /*Init The Current Parent*/
-        this.theParent = theParent;
-
         /*Init The Space Cell postion*/
         this.spaceCell = spaceCell;
 
-        /*Update Current movesFromStart*/
-        if (this.theParent != null) {
-            movesFromStart = this.theParent.movesFromStart + 1;
-        }
+       this.movesFromStart = movesFromStart;
     } 
     
    public int compareTo(Object o) {
@@ -67,22 +58,24 @@ public class PuzzleNode implements Comparable {
         return (this.compareTo(other) == 0);
     }
 
- 
-    public boolean isVisitedBefore() {
-
-        /*If its the solution Then its ok to stuck on it*/
-        if (this.movesToGoal == 0) {
-            return false;
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 11 * hash + (this.puzzle != null ? calculateHashCodeForPuzzle() : 0);
+        return hash;
+    }
+    
+    private int calculateHashCodeForPuzzle(){
+        int result = 17;
+        int[] puzzleRaw;
+        for(int i=0;i<puzzle.length;i++){
+           puzzleRaw = puzzle[i];
+            for(int j=0;j<puzzleRaw.length;j++){
+                result += result*37 + puzzle[i][j];
+            }
         }
-
-        boolean isVisited = PuzzleGame.prevPos.contains(this);
-        if (!isVisited) {
-            PuzzleGame.prevPos.add(this); /*Not visited Then add it And return False*/
-            return false;
-        } else {
-            return true; /*Visited Before*/
-        }    
-}
+        return result;
+    }
 
     public Point getSpaceCell() {
         return spaceCell;

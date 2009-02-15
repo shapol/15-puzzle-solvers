@@ -1,21 +1,21 @@
 package IDAstar;
 
 import java.awt.Point;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Vector;
 
 public class IDAStar {
 
-    private static int[][][] manhatanDistance;
-    private boolean _isFinished;
+    public static boolean _isFinished;
     private PuzzleNode root;
-    public static final int gameWidth = 15;
-    public static int puzzleDimension = 4;
+    private int puzzleDimension;
     private PuzzleNode goalNode;
-    private HashMap<PuzzleNode, Integer> _pathNodes;
-    private Vector<PuzzleNode> _childs;
+    private HashSet<PuzzleNode> _pathNodes;
+    private int totalNumberOfNodes;
+    private int toatlNumberOfNodesExpansions;
 
     public IDAStar(int[][] puzzle) throws Exception {
+        puzzleDimension = Puzzle.PuzzleGame.puzzleDimension;
         if ((puzzle.length != puzzleDimension) | (puzzle[0].length != puzzleDimension)) {
             throw new Exception("InValid Game Width != " + puzzleDimension);
         }
@@ -23,17 +23,18 @@ public class IDAStar {
         if (spaceCell == null) {
             throw new Exception("where is the space?  :-) ");
         }
-        this.root = new PuzzleNode(puzzle, null, spaceCell);
+        this.root = new PuzzleNode(puzzle, 0, spaceCell);
         int[][] goalPuzzle = {
             {0, 1, 2, 3},
             {4, 5, 6, 7},
             {8, 9, 10, 11},
             {12, 13, 14, 15}
         };
-        goalNode = new PuzzleNode(goalPuzzle, null, new java.awt.Point(0, 0));
-        initializeManhatanDistance();
+        goalNode = new PuzzleNode(goalPuzzle, 0, new java.awt.Point(0, 0));
         _isFinished = false;
-        _pathNodes = new HashMap<PuzzleNode, Integer>();
+        totalNumberOfNodes = 0;
+        toatlNumberOfNodesExpansions = 0;
+        _pathNodes = new HashSet<PuzzleNode>();
     }
 
     private Point getSpacePoint(int[][] puzzle) {
@@ -50,28 +51,30 @@ public class IDAStar {
     public int f(PuzzleNode puzzleNode) {
         return g(puzzleNode) + h(puzzleNode);
     }
-
     public int g(PuzzleNode puzzleNode) {
         return puzzleNode.getMovesFromStart();
     }
-
     public int h(PuzzleNode puzzleNode) {
-        return getManahtanDistance(puzzleNode);
+        return Puzzle.PuzzleGame.getManahtanDistance(puzzleNode);
     }
 
     public void solveGame() {
-        System.out.println(IDA(this.root));
+        System.out.println(IDAStarAlgorithm(this.root));
     }
-
-    public int IDA(PuzzleNode root) {
+    public int IDAStarAlgorithm(PuzzleNode root) {
         _isFinished = false;
         int threshold = h(root);
-        PuzzleNode node;
-        int temp;
-        while (!_isFinished) {
-            _pathNodes.put(root, 0);
-            temp = DFAux(root, threshold);
+        int temp;        
+        long startAlgoDtime = System.currentTimeMillis();
+        while (!_isFinished && threshold<100) {
+            System.out.println("("+threshold+")");
+            _pathNodes.add(root);
+            temp = IDAStartAuxiliary(root, threshold);
             if (_isFinished) {
+                long endAlgoTime = System.currentTimeMillis();
+                System.out.println("Time : "+(endAlgoTime-startAlgoDtime));
+                System.out.println("Total number of nodes : "+totalNumberOfNodes);
+                System.out.println("Total number of node expansions "+toatlNumberOfNodesExpansions);
                 return temp;
             }
             if (temp == -1) {
@@ -82,32 +85,37 @@ public class IDAStar {
         }
         return -1;
     }
-
-    public int DFAux(PuzzleNode node, int threshold) {
-        if (isDone(node)) {
+    public int IDAStartAuxiliary(PuzzleNode node, int threshold) {
+        
+          //     if (isDone(node)) {
+        if(h(node)==0){
             _isFinished = true;
             return f(node);
-        }
-
+        }  
+        
         if (f(node) > threshold) {
             return f(node);
-        }
+        }    
 
         int min = Integer.MAX_VALUE;
         int temp;
         Vector<PuzzleNode> childs = generateValidNodes(node);
+        totalNumberOfNodes += childs.size();
+        if(childs.size()>0){
+            toatlNumberOfNodesExpansions++;
+        }
         for (PuzzleNode child : childs) {
-            _pathNodes.put(child, 0);
-            //        System.out.println(child);
-            //          System.out.println();
-            temp = DFAux(child, threshold);
+            _pathNodes.add(child);
+            temp = IDAStartAuxiliary(child, threshold);
             if (_isFinished) {
+                System.out.println(child);
+                System.out.println();
                 return temp;
             }
             if (temp < min) {
                 min = temp;
             }
-            _pathNodes.remove(child);
+           _pathNodes.remove(child);
         }
         return min;
     }
@@ -118,52 +126,10 @@ public class IDAStar {
         }
         return false;
     }
-
-    public void initializeManhatanDistance() {
-        manhatanDistance = new int[gameWidth + 1][puzzleDimension][puzzleDimension];
-        for (int value = 0; value <= gameWidth; value++) {
-            for (int i = 0; i < puzzleDimension; i++) {
-                for (int j = 0; j < puzzleDimension; j++) {
-                    manhatanDistance[value][i][j] = Math.abs(value / puzzleDimension - i) + Math.abs(value % puzzleDimension - j);
-                }
-            }
-        }
+    
+    public PuzzleNode generateNewPuzzleNode(int[][] puzzle, Point spaceCell, Point moveToMake, PuzzleNode parentNode) {
+        return new PuzzleNode(makeMoveOnPuzzle(puzzle, spaceCell, moveToMake), parentNode.getMovesFromStart()+1, moveToMake);
     }
-
-    public static int getManahtanDistance(PuzzleNode puzzleNode) {
-        int distance = 0;
-        int[][] puzzle = puzzleNode.getPuzzle();
-        int[] puzzleRaw;
-        int tValue;
-        for (int i = 0; i < puzzle.length; i++) {
-            puzzleRaw = puzzle[i];
-            for (int j = 0; j < puzzleRaw.length; j++) {
-                tValue = puzzle[i][j];
-                if (tValue != 0) {
-                    distance += manhatanDistance[tValue][i][j];
-                }
-
-            }
-        }
-        return distance;
-    }
-
-    public static int getManahtanDistance(int[][] puzzle) {
-        int distance = 0;
-        int[] puzzleRaw;
-        int tValue;
-        for (int i = 0; i < puzzle.length; i++) {
-            puzzleRaw = puzzle[i];
-            for (int j = 0; j < puzzleRaw.length; j++) {
-                tValue = puzzle[i][j];
-                if (tValue != 0) {
-                    distance += manhatanDistance[tValue][i][j];
-                }
-            }
-        }
-        return distance;
-    }
-
     private Vector<PuzzleNode> generateValidNodes(PuzzleNode puzzleNode) {
 
         int[][] puzzle = puzzleNode.getPuzzle();
@@ -177,41 +143,39 @@ public class IDAStar {
         if (spaceCell.x - 1 >= 0) {
             point = new Point(spaceCell.x - 1, spaceCell.y);
             tPuzzleNode = generateNewPuzzleNode(puzzle, spaceCell, point, puzzleNode);
-            if (!_pathNodes.containsKey(tPuzzleNode)) {
+            if (!_pathNodes.contains(tPuzzleNode)) {
                 result.add(tPuzzleNode);
             }
         }
         if (spaceCell.x + 1 < puzzleDimension) {
             point = new Point(spaceCell.x + 1, spaceCell.y);
             tPuzzleNode = generateNewPuzzleNode(puzzle, spaceCell, point, puzzleNode);
-            if (!_pathNodes.containsKey(tPuzzleNode)) {
+            if (!_pathNodes.contains(tPuzzleNode)) {
                 result.add(tPuzzleNode);
             }
         }
         if (spaceCell.y - 1 >= 0) {
             point = new Point(spaceCell.x, spaceCell.y - 1);
             tPuzzleNode = generateNewPuzzleNode(puzzle, spaceCell, point, puzzleNode);
-            if (!_pathNodes.containsKey(tPuzzleNode)) {
+            if (!_pathNodes.contains(tPuzzleNode)) {
                 result.add(tPuzzleNode);
             }
         }
         if (spaceCell.y + 1 < puzzleDimension) {
             point = new Point(spaceCell.x, spaceCell.y + 1);
             tPuzzleNode = generateNewPuzzleNode(puzzle, spaceCell, point, puzzleNode);
-            if (!_pathNodes.containsKey(tPuzzleNode)) {
+            if (!_pathNodes.contains(tPuzzleNode)) {
                 result.add(tPuzzleNode);
             }
         }
         return result;
     }
-
     private int[][] makeMoveOnPuzzle(int[][] puzzle, Point spaceCell, Point moveToMake) {
         int[][] result = clonePuzzle(puzzle);
         result[spaceCell.x][spaceCell.y] = puzzle[moveToMake.x][moveToMake.y];
         result[moveToMake.x][moveToMake.y] = 0;
         return result;
     }
-
     private int[][] clonePuzzle(int[][] puzzle) {
         int[] puzzleRaw;
         int[][] newPuzzle = new int[puzzleDimension][puzzleDimension];
@@ -223,8 +187,5 @@ public class IDAStar {
         }
         return newPuzzle;
     }
-
-    public PuzzleNode generateNewPuzzleNode(int[][] puzzle, Point spaceCell, Point moveToMake, PuzzleNode parentNode) {
-        return new PuzzleNode(makeMoveOnPuzzle(puzzle, spaceCell, moveToMake), parentNode, moveToMake);
-    }
+   
 }
