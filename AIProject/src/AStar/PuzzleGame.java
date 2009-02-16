@@ -98,7 +98,7 @@ public class PuzzleGame {
     }
 
     private void initializeManhatanDistance() {
-        PuzzleGame.manhatanDistance = new int[maxValue+1][puzzleDimension][puzzleDimension];
+        manhatanDistance = new int[maxValue+1][puzzleDimension][puzzleDimension];
         for (int value = 0; value <= maxValue; value++) {
             for (int i = 0; i < puzzleDimension; i++) {
                 for (int j = 0; j < puzzleDimension; j++) {

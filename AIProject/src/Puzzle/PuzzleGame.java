@@ -79,7 +79,7 @@ public class PuzzleGame {
                 {3, 10, 7, 5},
                 {11, 13, 6, 12}
             },
-            //55 - Puzzle 7   initial h= 29, depth =  41,  927,212.0
+            //55 - Puzzle 7   initial h= 29, depth =  41,  927,212.0 - number 4 at the site
             {
                 {13, 8, 14, 3},
                 {9, 1, 0, 7},
@@ -105,7 +105,7 @@ public class PuzzleGame {
              {11,13,6,12}
             }            
         };
-        int puzzleNumber = 9; 
+        int puzzleNumber = 7; 
         Algorithm chosenAlgorithm = Algorithm.IDAStar;
         
         try {
