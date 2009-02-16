@@ -103,9 +103,15 @@ public class PuzzleGame {
              {15,1,4,14},
              {3,10,7,5},
              {11,13,6,12}
-            }            
+            },
+            // Puzzle 11 - very wasy puzzle
+            {{1,2,0,3},
+             {4,5,6,7},
+             {8,9,10,11},
+             {12,13,14,15}
+            }
         };
-        int puzzleNumber = 7; 
+        int puzzleNumber = 11; 
         Algorithm chosenAlgorithm = Algorithm.IDAStar;
         
         try {
