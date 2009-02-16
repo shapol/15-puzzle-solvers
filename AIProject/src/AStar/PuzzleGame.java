@@ -7,8 +7,8 @@ import java.util.Vector;
 
 public class PuzzleGame {
 
-    public static int puzzleDimension = 4; /*4X4 Puzzle*/
-    public static int maxValue = 15;
+    public static int puzzleDimension = Puzzle.PuzzleGame.puzzleDimension;
+    public static int maxValue = Puzzle.PuzzleGame.gameSlotsNumber;
         
     private PuzzleNode goalNode; /*Final Goal*/
     
