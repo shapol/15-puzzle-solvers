@@ -58,25 +58,7 @@ public class PuzzleNode {
     }
 
     private int getManahtanDistance(PuzzleNode node) {
-
-        int destinationI;
-        int destinationJ;
-        int distance = 0;
-
-        for (int i = 0; i < PuzzleGame.puzzleDimension; i++) {
-            for (int j = 0; j < PuzzleGame.puzzleDimension; j++) {
-                int currValue = node.puzzle[i][j];
-                if (currValue == 0) {
-                    destinationI = PuzzleGame.puzzleDimension - 1;
-                    destinationJ = PuzzleGame.puzzleDimension - 1;
-                } else {
-                    destinationI = (currValue - 1) / PuzzleGame.puzzleDimension;
-                    destinationJ = (currValue - 1) % PuzzleGame.puzzleDimension;
-                }
-                distance = distance + Math.abs(i - destinationI) + Math.abs(j - destinationJ);
-            }
-        }
-        return distance;
+      return Puzzle.PuzzleGame.getManahtanDistance(node.getPuzzle());
     }
 
     @Override

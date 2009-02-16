@@ -88,9 +88,8 @@ public class PuzzleGame {
     }
    
     private PuzzleNode openListExtrectMin() {
-        Collections.sort(openList, new SmallerPuzzleNode());        
+        Collections.sort(openList, new SmallerPuzzleNode());
         PuzzleNode res = openList.remove();
-        System.out.println("Extrecting : "+res.getMovesToGoal()+res.getMovesFromStart());
         return res;        
     }
 

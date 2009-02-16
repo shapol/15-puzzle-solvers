@@ -11,10 +11,10 @@ public class SmallerPuzzleNode implements Comparator {
         int secondValue = ((PuzzleNode)second).getMovesToGoal()+((PuzzleNode)second).getMovesFromStart();
         
         if (firstValue>secondValue)
-            return -1;
+            return 1;
         
         if (firstValue<secondValue)
-            return 1;
+            return -1;
         
         return 0;    
     }
