@@ -109,10 +109,10 @@ public class PuzzleGame {
              {4,5,6,7},
              {8,9,10,11},
              {12,13,14,15}
-            }
+            },
         };
         int puzzleNumber = 7; 
-        Algorithm chosenAlgorithm = Algorithm.AStar;
+        Algorithm chosenAlgorithm = Algorithm.IDAStar;
         
         try {
             switch(chosenAlgorithm){
