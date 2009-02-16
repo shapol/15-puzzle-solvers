@@ -63,10 +63,14 @@ public class PuzzleGame {
         int distance = 0;
         int[][] puzzle = puzzleNode.getPuzzle();
         int[] puzzleRaw;
+        int tValue;
         for (int i = 0; i < puzzle.length; i++) {
             puzzleRaw = puzzle[i];
             for (int j = 0; j < puzzleRaw.length; j++) {
-                distance += manhatanDistance[puzzle[i][j] - 1][i][j];
+                tValue = puzzle[i][j];
+                if (tValue != 0) {
+                    distance += manhatanDistance[tValue][i][j];
+                }
             }
         }
         return distance;

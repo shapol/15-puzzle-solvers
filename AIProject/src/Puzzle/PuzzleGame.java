@@ -105,7 +105,7 @@ public class PuzzleGame {
              {11,13,6,12}
             }            
         };
-        int puzzleNumber = 10; 
+        int puzzleNumber = 9; 
         Algorithm chosenAlgorithm = Algorithm.IDAStar;
         
         try {
