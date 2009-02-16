@@ -98,8 +98,8 @@ public class PuzzleGame {
     }
 
     private void initializeManhatanDistance() {
-        PuzzleGame.manhatanDistance = new int[maxValue][puzzleDimension][puzzleDimension];
-        for (int value = 0; value < maxValue; value++) {
+        PuzzleGame.manhatanDistance = new int[maxValue+1][puzzleDimension][puzzleDimension];
+        for (int value = 0; value <= maxValue; value++) {
             for (int i = 0; i < puzzleDimension; i++) {
                 for (int j = 0; j < puzzleDimension; j++) {
                     manhatanDistance[value][i][j] = Math.abs(value / puzzleDimension - i) + Math.abs(value % puzzleDimension - j);
