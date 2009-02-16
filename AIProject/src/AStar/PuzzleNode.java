@@ -11,9 +11,7 @@ public class PuzzleNode {
     private int[][] puzzle;
     private Point spaceCell;
     private int movesFromStart = 0;     /*Steps Made Up To Here (Optimize to Minimum That Number)*/
-
     private int movesToGoal = 0;        /*Estimate based on The heuristic*/
-
     private LinkedList<Point> validMoves;   /*Space Cell can (Valid Move) move to any of this Points*/
 
 
@@ -101,6 +99,7 @@ public class PuzzleNode {
         return validMoves;
     }
 
+    
     private LinkedList<Point> generateValidMoves() {
 
         /*The SpaceCell can move either left , right , up , down*/

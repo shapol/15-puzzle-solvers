@@ -9,8 +9,6 @@ public class PuzzleGame {
 
     public static int puzzleDimension = Puzzle.PuzzleGame.puzzleDimension;
     public static int maxValue = Puzzle.PuzzleGame.gameSlotsNumber;
-        
-    private PuzzleNode goalNode; /*Final Goal*/
     
     private PuzzleNode root;   
     LinkedList<PuzzleNode> openList;
@@ -22,7 +20,7 @@ public class PuzzleGame {
 
         /*Validate Size*/
         if ((puzzle.length != puzzleDimension) | (puzzle[0].length != puzzleDimension)) {
-            throw new Exception("InValid Game Width != 15");
+            throw new Exception("InValid Game Width");
         }
 
         /*Make Sure it has Space in it And Get It*/
@@ -30,20 +28,11 @@ public class PuzzleGame {
         if (spaceCell == null) {
             throw new Exception("where is the space?  :-) ");
         }
-               
-         /*Create Goal State*/
-        int[][] goalPuzzle = {
-            {0, 1, 2, 3},
-            {4, 5, 6, 7},
-            {8, 9, 10, 11},
-            {12, 13, 14, 15}
-        };
-        goalNode = new PuzzleNode(goalPuzzle, null, new java.awt.Point(0, 0));
-               
+                                      
         /*Create Puzzle*/
         this.root = new PuzzleNode(puzzle, null, spaceCell);
+        
         PuzzleGame.prevPos.clear();
-
         openList = new LinkedList<PuzzleNode>();               
     }
             
@@ -69,11 +58,8 @@ public class PuzzleGame {
         System.out.println("Solution Not Found");
     }
             
-    private boolean isDone(PuzzleNode currNode) {
-        if (currNode.equals(goalNode)) {
-            return true;
-        }
-        return false;
+    private boolean isDone(PuzzleNode currNode) {        
+        return (currNode.getMovesToGoal()==0);
     }
     
     private Point getSpacePoint(int[][] puzzle) {
