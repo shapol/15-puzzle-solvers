@@ -141,7 +141,7 @@ public class IDAStar {
 
         int min = Integer.MAX_VALUE;
         int temp;
-        Vector<Point> validSpacePoints = generateValidNodes(spaceI, spaceJ);
+        Vector<Point> validSpacePoints = generateValidSpacePoints(spaceI, spaceJ);
         if (validSpacePoints.size() > 0) {
             toatlNumberOfNodesExpansions++;
         }
@@ -215,7 +215,7 @@ public class IDAStar {
 
         int min = Integer.MAX_VALUE;
         int temp;
-        Vector<Point> validSpacePoints = generateValidNodes(spaceI, spaceJ);
+        Vector<Point> validSpacePoints = generateValidSpacePoints(spaceI, spaceJ);
         if (validSpacePoints.size() > 0) {
             toatlNumberOfNodesExpansions++;
         }
@@ -235,21 +235,8 @@ public class IDAStar {
         }
         return min;
     }
-  
-    private int getStatesOccurences() {
-        Iterator statesIter = _statesOccurrence.values().iterator();
-        int result = 0;
-        Integer stateOccurence = null;
-        while (statesIter.hasNext()) {
-            stateOccurence = (Integer) statesIter.next();
-            if (stateOccurence > 1) {
-                result += stateOccurence;
-            }
-        }
-        return result;
-    }
-
-    private Vector<Point> generateValidNodes(int spaceI, int spaceJ) {
+      
+    private Vector<Point> generateValidSpacePoints(int spaceI, int spaceJ) {
 
         /*The SpaceCell can move either left , right , up , down*/
         Vector<Point> result = new Vector<Point>();
@@ -297,6 +284,19 @@ public class IDAStar {
         newPuzzle[spaceI][spaceJ] = puzzle[newSpaceI][newSpaceJ];
         newPuzzle[newSpaceI][newSpaceJ] = 0;
         return newPuzzle;
+    }
+
+    private int getStatesOccurences() {
+        Iterator statesIter = _statesOccurrence.values().iterator();
+        int result = 0;
+        Integer stateOccurence = null;
+        while (statesIter.hasNext()) {
+            stateOccurence = (Integer) statesIter.next();
+            if (stateOccurence > 1) {
+                result += stateOccurence;
+            }
+        }
+        return result;
     }
 
     
