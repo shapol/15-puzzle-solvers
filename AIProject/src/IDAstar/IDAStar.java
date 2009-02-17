@@ -79,6 +79,13 @@ public class IDAStar {
     //IDAStarAlgorithmWithDoubleVerticiesSaves(new PuzzleNode(cloneSquareMatrix(this.root)), spacePoint.x, spacePoint.y);
     }
 
+    /**
+     *  This function will run the IDA* algorithm, it will use the IDAStartAuxiliary function
+     * @param root
+     * @param spaceI
+     * @param spaceJ
+     * @return
+     */
     public int IDAStarAlgorithm(int[][] root, int spaceI, int spaceJ) {
         _isFinished = false;
         int threshold = h(root);
