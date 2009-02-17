@@ -130,17 +130,25 @@ public class IDAStar {
 
         totalNumberOfNodes++;
 
+        /* Check to see if a solution has been found. */
         if (h(puzzle) == 0) {
+            /* Solution found! Recurse back up the tree, ending all further search. */
             _isFinished = true;
             return f(g, puzzle);
         }
 
         if (f(g, puzzle) > threshold) {
+            /* State cannot be solved in this iteration. No further
+             * search effort is needed. */
             return f(g, puzzle);
         }
 
         int min = Integer.MAX_VALUE;
         int temp;
+        /* Must now consider the moves in this position. Identify
+  	 * all legal moves.  notice that the reverse of the move that took to
+         * this state will not be generated with generateValidSpacePoints function.
+	 */
         Vector<Point> validSpacePoints = generateValidSpacePoints(spaceI, spaceJ);
         if (validSpacePoints.size() > 0) {
             toatlNumberOfNodesExpansions++;
@@ -149,21 +157,31 @@ public class IDAStar {
             parentSpaceI = spaceI;
             parentSpaceJ = spaceJ;
 
+            /* Modify state by playing "move" */
             makeMove(puzzle, spaceI, spaceJ, validSpacePoint.x, validSpacePoint.y);
             currentDepth++;
+            /* Recurse on the new state.  one more move down
+            * the search tree has been made, hence a value of "g+1" is passed to IDAStartAuxiliary.
+             * If _isFinished will be updated to true then a solution 
+             * has been found and the search is stopped.
+             */
             temp = IDAStartAuxiliary(puzzle, validSpacePoint.x, validSpacePoint.y, (g + 1), threshold);
             currentDepth--;
             if (_isFinished) {
-                /* A solution has been found! End the iterations and return the depth of solution. */
+            /* A solution has been found. Curtail search 
+             * at this node, and pass back the solution flag to the parent state.*/
                 return temp;
             }
-            if (temp < min) {
+            if (temp < min) { //update the minimum state cost that have been generated but not expanded.
                 min = temp;
             }
 
-            //undo move
+            /* Modify state by undoing "move" */
             makeMove(puzzle, validSpacePoint.x, validSpacePoint.y, spaceI, spaceJ);
         }
+        
+        /* All moves have been considered and no solution was found.
+	 * Return the minimum cost for the next iteration.*/
         return min;
     }
 
