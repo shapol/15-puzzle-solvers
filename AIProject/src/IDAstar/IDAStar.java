@@ -5,6 +5,17 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
+/**
+ * This class will implement IDA* algorithm.
+ * 
+ * Iterative deepening A*.  Find a lower bound on the solution 
+ * and then try and verify whether the bound is the correct answer.
+ * If the search fails, then the bound was too low and has to be
+ * increased.  Repeat the process (iterate) until the bound has been
+ * increased (deepened) large enough to find the solution.
+ * 
+ * @author Tomer Peled & Al Yaros
+ */
 public class IDAStar {
 
     private int puzzleDimension; // The dimension of the puzzle    
@@ -17,10 +28,13 @@ public class IDAStar {
     public static boolean _isFinished; // is the algorithm has finished - meanining got to the goal node
     
     /*Statistics variables */
+    /****************************************************************************************/
     private int totalNumberOfNodes;
     private int toatlNumberOfNodesExpansions;
-    private HashMap<PuzzleNode, Integer> _statesOccurences;
+    private HashMap<PuzzleNode, Integer> _statesOccurrence;
     private int numberOfDuplicates;
+    private int currentDepth;
+    /****************************************************************************************/
 
     public IDAStar(int[][] puzzle) throws Exception {
         puzzleDimension = Puzzle.PuzzleGame.puzzleDimension;
@@ -32,13 +46,21 @@ public class IDAStar {
             throw new Exception("where is the space?  :-) ");
         }
         this.root = puzzle;
+        
+        /*Statistics initialization*/
         _isFinished = false;
         totalNumberOfNodes = 0;
         toatlNumberOfNodesExpansions = 0;
-        _statesOccurences = new HashMap<PuzzleNode, Integer>();
+        _statesOccurrence = new HashMap<PuzzleNode, Integer>();
         numberOfDuplicates = 0;
+        currentDepth = 0;
     }
 
+    /**
+     * This function will return the position point of the space in the given puzzle
+     * @param puzzle a puzzle matrix
+     * @return the Point position of the space in the given puzzle
+     */
     private Point getSpacePoint(int[][] puzzle) {
         for (int i = 0; i < puzzleDimension; i++) {
             for (int j = 0; j < puzzleDimension; j++) {
@@ -59,7 +81,9 @@ public class IDAStar {
     public void solveGame() {
         Point spacePoint = getSpacePoint(this.root);
         IDAStarAlgorithm(cloneSquareMatrix(this.root), spacePoint.x, spacePoint.y);
-        IDAStarAlgorithmWithDoubleVerticiesSaves(new PuzzleNode(cloneSquareMatrix(this.root)), spacePoint.x, spacePoint.y);
+        
+        //Run this in order to save the duplicates also
+        //IDAStarAlgorithmWithDoubleVerticiesSaves(new PuzzleNode(cloneSquareMatrix(this.root)), spacePoint.x, spacePoint.y);
     }
 
     public int IDAStarAlgorithm(int[][] root, int spaceI, int spaceJ) {
@@ -67,8 +91,9 @@ public class IDAStar {
         int threshold = h(root);
         int temp;
         long startAlgoDtime = System.currentTimeMillis();
+         currentDepth = 0;
         while (!_isFinished && threshold < 100) {
-            System.out.println("(" + threshold + ")");
+          //  System.out.println("(" + threshold + ")");
             parentSpaceI = spaceI;
             parentSpaceJ = spaceJ;
             temp = IDAStartAuxiliary(root, spaceI, spaceJ, 0, threshold);
@@ -89,7 +114,7 @@ public class IDAStar {
     public int IDAStartAuxiliary(int[][] puzzle, int spaceI, int spaceJ, int g, int threshold) {
 
         totalNumberOfNodes++;
-
+        
         if (h(puzzle) == 0) {
             _isFinished = true;
             return f(g, puzzle);
@@ -110,14 +135,19 @@ public class IDAStar {
             parentSpaceJ = spaceJ;
 
             makeMove(puzzle, spaceI, spaceJ, validSpacePoint.x, validSpacePoint.y);
+             currentDepth++;
+             System.out.println(currentDepth);
             temp = IDAStartAuxiliary(puzzle, validSpacePoint.x, validSpacePoint.y, (g + 1), threshold);
+             currentDepth--;
             if (_isFinished) {
                 return temp;
             }
             if (temp < min) {
                 min = temp;
             }
-            undoMove(puzzle, validSpacePoint.x, validSpacePoint.y, spaceI, spaceJ);
+             
+            //undo move
+            makeMove(puzzle, validSpacePoint.x, validSpacePoint.y, spaceI, spaceJ);
         }
         return min;
     }
@@ -148,18 +178,18 @@ public class IDAStar {
                 return -1;
             }
             threshold = temp;
-            _statesOccurences.clear();
+            _statesOccurrence.clear();
         }
         return -1;
     }
     public int IDAStartAuxiliaryWithDoubleVerticiesSaves(PuzzleNode puzzle, int spaceI, int spaceJ, int g, int threshold) {
 
         totalNumberOfNodes++;
-        Integer stateOccurence = _statesOccurences.get(puzzle);
+        Integer stateOccurence = _statesOccurrence.get(puzzle);
         if (stateOccurence != null) {
-            _statesOccurences.put(puzzle, stateOccurence + 1);
+            _statesOccurrence.put(puzzle, stateOccurence + 1);
         } else {
-            _statesOccurences.put(puzzle, 1);
+            _statesOccurrence.put(puzzle, 1);
         }
 
         if (h(puzzle.getPuzzle()) == 0) {
@@ -195,7 +225,7 @@ public class IDAStar {
     }
 
     private int getStatesOccurences() {
-        Iterator statesIter = _statesOccurences.values().iterator();
+        Iterator statesIter = _statesOccurrence.values().iterator();
         int result = 0;
         Integer stateOccurence = null;
         while (statesIter.hasNext()) {
@@ -232,21 +262,30 @@ public class IDAStar {
         return result;
     }
 
+    /**
+     * This function will make a move on the given puzzle
+     * 
+     * @param puzzle the puzzle matrix
+     * @param spaceI the i value of the current space
+     * @param spaceJ the j value of the current space
+     * @param newSpaceI the i value of the new space place
+     * @param newSpaceJ the j value of the new space place
+     */
     private void makeMove(int[][] puzzle, int spaceI, int spaceJ, int newSpaceI, int newSpaceJ) {
         puzzle[spaceI][spaceJ] = puzzle[newSpaceI][newSpaceJ];
         puzzle[newSpaceI][newSpaceJ] = 0;
     }
 
+    /*
+     * This function will make a move on the puzzle.
+     * notice that this function will return new cloned puzzle and that it will be used in the IDAStartAuxiliaryWithDoubleVerticiesSaves
+     *function.
+     */
     private int[][] makeMoveWithClone(int[][] puzzle, int spaceI, int spaceJ, int newSpaceI, int newSpaceJ) {
         int[][] newPuzzle = cloneSquareMatrix(puzzle);
         newPuzzle[spaceI][spaceJ] = puzzle[newSpaceI][newSpaceJ];
         newPuzzle[newSpaceI][newSpaceJ] = 0;
         return newPuzzle;
-    }
-
-    private void undoMove(int[][] puzzle, int spaceI, int spaceJ, int oldSpaceI, int oldSpaceJ) {
-        puzzle[spaceI][spaceJ] = puzzle[oldSpaceI][oldSpaceJ];
-        puzzle[oldSpaceI][oldSpaceJ] = 0;
     }
 
     private int[][] cloneSquareMatrix(int[][] matrix) {

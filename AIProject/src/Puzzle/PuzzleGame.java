@@ -43,7 +43,7 @@ public class PuzzleGame {
 
     public static void main(String[] args) {
                 
-        int puzzleNumber = 6;
+        int puzzleNumber = 1;
         Algorithm chosenAlgorithm = Algorithm.AStar;
 
         /*Astar Solver*/
@@ -58,26 +58,6 @@ public class PuzzleGame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    /*
-    try {
-    switch(chosenAlgorithm){
-    case AStar:
-    
-    AStar.AStarGameSolver puzzleGame = new AStar.AStarGameSolver(get8Puzzle(puzzleNumber));
-    puzzleGame.solveGame();              
-    break;
-    case IDAStar:
-    
-    IDAstar.IDAStar idaStar = new IDAstar.IDAStar(get8Puzzle(puzzleNumber));
-    idaStar.solveGame();
-    break;                    
-    }                            
-    } catch (Exception ex) {
-    System.out.println(ex.getMessage());
-    }
-     */
-
-
     }
 
     public static int[][] get8Puzzle(int puzzleNumber) {
@@ -116,7 +96,7 @@ public class PuzzleGame {
             {{1, 2, 5},
                 {3, 4, 0},
                 {6, 7, 8},
-            }
+            },
         };
         return puzzels[puzzleNumber];
     }

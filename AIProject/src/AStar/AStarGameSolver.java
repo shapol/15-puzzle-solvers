@@ -123,9 +123,7 @@ public class AStarGameSolver {
             }
             return 0;
         }
-    }
-
-    
+    }  
 
             
 }//End of AStarGameSolver Class
