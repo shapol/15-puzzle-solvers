@@ -80,11 +80,11 @@ public class IDAStar {
     }
 
     /**
-     *  This function will run the IDA* algorithm, it will use the IDAStartAuxiliary function
-     * @param root
-     * @param spaceI
-     * @param spaceJ
-     * @return
+     *  This function will run the IDA* algorithm, it will use the IDAStartAuxiliary function for each iteration.
+     * @param root the root puzzle for the algorithm
+     * @param spaceI the i value of the space of the root puzzle
+     * @param spaceJ the j value of the space of the root puzzle
+     * @return the depth/number of stpes to the goal node
      */
     public int IDAStarAlgorithm(int[][] root, int spaceI, int spaceJ) {
         _isFinished = false;
@@ -103,13 +103,19 @@ public class IDAStar {
                 System.out.println("Total number of node expansions " + toatlNumberOfNodesExpansions);
                 return temp;
             }
-            if (temp == -1) {
-                return -1;
-            }
             threshold = temp;
         }
         return -1;
     }
+    /**
+     *  This function is an auxiliary function for the IDAStarAlgorithm function.
+     * @param puzzle the puzzle matrix
+     * @param spaceI the i value of the current puzzle space location
+     * @param spaceJ the j value of the current puzzle space location
+     * @param g the distance of the current state from the root state.
+     * @param threshold the current threshold of the current iteration.
+     * @return the depth/number of stpes to the goal node
+     */
     public int IDAStartAuxiliary(int[][] puzzle, int spaceI, int spaceJ, int g, int threshold) {
 
         totalNumberOfNodes++;
@@ -172,9 +178,6 @@ public class IDAStar {
             if (_isFinished) {
                 System.out.println("Number Of duplicates at the whole algorithm is " + this.numberOfDuplicates);
                 return temp;
-            }
-            if (temp == -1) {
-                return -1;
             }
             threshold = temp;
             _statesOccurrence.clear();
