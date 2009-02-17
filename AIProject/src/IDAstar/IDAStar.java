@@ -36,8 +36,9 @@ public class IDAStar {
     private int numberOfDuplicates;
     private int currentDepth; // This variable will only be used for having information of the current space that the IDA* takes
                                                                 //    (the  stack size).
-
     /****************************************************************************************/
+    
+    
     public IDAStar(int[][] puzzle) throws Exception {
         puzzleDimension = Puzzle.PuzzleGame.puzzleDimension;
         if ((puzzle.length != puzzleDimension) | (puzzle[0].length != puzzleDimension)) {
@@ -56,6 +57,7 @@ public class IDAStar {
         _statesOccurrence = new HashMap<PuzzleNode, Integer>();
         numberOfDuplicates = 0;
         currentDepth = 0;
+        
     }
 
     /**
@@ -98,6 +100,7 @@ public class IDAStar {
             parentSpaceJ = spaceJ;
             temp = IDAStartAuxiliary(root, spaceI, spaceJ, 0, threshold);
             if (_isFinished) {
+                 /* A solution has been found! End the iterations and return the depth of solution. */
                 long endAlgoTime = System.currentTimeMillis();
                 System.out.println("Run Time : " + (endAlgoTime - startAlgoDtime)+" millisec");
                 System.out.println("Solution Depth: "+temp);
@@ -105,6 +108,11 @@ public class IDAStar {
                 System.out.println("Number of Nodes That has Been Generated:" + totalNumberOfNodes);                
                 return temp;
             }
+            
+            /* A solution has not been found for this threshold.
+             * Increase the threshold to the minimal cost of the last iteration
+             * generated nodes which hadn't been expanded..
+             */
             threshold = temp;
         }
         return -1;
@@ -146,6 +154,7 @@ public class IDAStar {
             temp = IDAStartAuxiliary(puzzle, validSpacePoint.x, validSpacePoint.y, (g + 1), threshold);
             currentDepth--;
             if (_isFinished) {
+                /* A solution has been found! End the iterations and return the depth of solution. */
                 return temp;
             }
             if (temp < min) {
