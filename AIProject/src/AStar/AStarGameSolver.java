@@ -13,6 +13,7 @@ public class AStarGameSolver {
     public static int maxValue = Puzzle.PuzzleGame.gameSlotsNumber;
     private PuzzleNode root;
     PriorityQueue<PuzzleNode> openList;
+    private int addedToOpenCounter=0;
     /*  we keep the previous positions and insure we never get there again. This keeps us from moving the same
     square back and forth ,and forces the moves taken  to advance towrds the goal. */
     public static HashSet<PuzzleNode> prevPos = new HashSet<PuzzleNode>();
@@ -43,6 +44,7 @@ public class AStarGameSolver {
 
         startTime = System.currentTimeMillis();
         openList.add(root); /*Add Root to Open List*/
+        addedToOpenCounter++;
         while (openList.size() > 0) {
             PuzzleNode currSolutionNode = openListExtrectMin();
             if (isDone(currSolutionNode)) {
@@ -54,6 +56,7 @@ public class AStarGameSolver {
                 LinkedList<PuzzleNode> childs = currSolutionNode.getMyChilds();
                 for (int i = 0; i < childs.size(); i++) {
                     openList.add(childs.get(i));
+                    addedToOpenCounter++;
                 }
             }
         }
@@ -95,6 +98,8 @@ public class AStarGameSolver {
         System.out.println("Solution Found");
         System.out.println("Solution Depth :" + (resultNode.getNodeDepth()-1));
         System.out.println("Number of Nodes That has Been expended: " + prevPos.size());
+        System.out.println("Number of Nodes That has Been Generated: " + addedToOpenCounter);
+        
         if (puzzleDimension == 3) {
             System.out.println("Number Of Nodes in The Search Space: 9!/2=181440");
         }
