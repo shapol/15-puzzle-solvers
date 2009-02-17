@@ -2,8 +2,8 @@ package Puzzle;
 
 public class PuzzleGame {
 
-    public static final int gameSlotsNumber = 8;
-    public static int puzzleDimension = 3;
+    public static final int gameSlotsNumber = 8; //15
+    public static int puzzleDimension = 3; //4
     public enum Algorithm {AStar,IDAStar};    
     private static int[][][] manhatanDistance;
 
@@ -110,11 +110,11 @@ public class PuzzleGame {
              {8,9,10,11},
              {12,13,14,15}
             },
-            // Puzzle 12 - 8Puzzle
+            // Puzzle 12 - 8 Puzzle
             {{6,7,0},
              {2,1,3},
              {5,4,8}             
-            }
+            }           
         };
         int puzzleNumber = 12;
         Algorithm chosenAlgorithm = Algorithm.AStar;
@@ -123,7 +123,7 @@ public class PuzzleGame {
             switch(chosenAlgorithm){
                 case AStar:
                  /*Astar Solver*/
-                   AStar.PuzzleGame puzzleGame = new AStar.PuzzleGame(puzzels[puzzleNumber]);
+                   AStar.AStarGameSolver puzzleGame = new AStar.AStarGameSolver(puzzels[puzzleNumber]);
                    puzzleGame.solveGame();              
                     break;
                 case IDAStar:
