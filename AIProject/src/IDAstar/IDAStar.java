@@ -123,7 +123,6 @@ public class IDAStar {
         _isFinished = false;
         int threshold = h(root.getPuzzle());
         int temp;
-        long startAlgoDtime = System.currentTimeMillis();
         while (!_isFinished && threshold < 100) {
             System.out.println("(" + threshold + ")");
             parentSpaceI = spaceI;
@@ -131,10 +130,6 @@ public class IDAStar {
             temp = IDAStartAuxiliaryWithDoubleVerticiesSaves(root, spaceI, spaceJ, 0, threshold);
             System.out.println("Number of doubled/or more than doubled occurences for this iteration is "+getStatesOccurences());
             if (_isFinished) {
-                long endAlgoTime = System.currentTimeMillis();
-                System.out.println("Time : " + (endAlgoTime - startAlgoDtime));
-                System.out.println("Total number of nodes : " + totalNumberOfNodes);
-                System.out.println("Total number of node expansions " + toatlNumberOfNodesExpansions);
                 return temp;
             }
             if (temp == -1) {
@@ -175,17 +170,15 @@ public class IDAStar {
             parentSpaceI = spaceI;
             parentSpaceJ = spaceJ;
 
-            makeMove(puzzle.getPuzzle(), spaceI, spaceJ, validSpacePoint.x, validSpacePoint.y);
-            temp = IDAStartAuxiliaryWithDoubleVerticiesSaves(puzzle, validSpacePoint.x, validSpacePoint.y, (g + 1), threshold);
+            int[][] newPuzzle = makeMoveWithClone(puzzle.getPuzzle(), spaceI, spaceJ, validSpacePoint.x, validSpacePoint.y);
+            PuzzleNode newPuzzleNode = new PuzzleNode(newPuzzle);
+            temp = IDAStartAuxiliaryWithDoubleVerticiesSaves(newPuzzleNode, validSpacePoint.x, validSpacePoint.y, (g + 1), threshold);
             if (_isFinished) {
-                //        System.out.println(child);
-                //     System.out.println();
                 return temp;
             }
             if (temp < min) {
                 min = temp;
             }
-            undoMove(puzzle.getPuzzle(), validSpacePoint.x, validSpacePoint.y, spaceI, spaceJ);
         }
         return min;
     }
@@ -196,7 +189,9 @@ public class IDAStar {
         Integer stateOccurence = null;
         while(statesIter.hasNext()){
             stateOccurence = (Integer)statesIter.next();
-            result += stateOccurence;
+            if(stateOccurence>1){
+                result += stateOccurence;
+            }            
         }
         return result;
     }
@@ -229,6 +224,13 @@ public class IDAStar {
     private void makeMove(int[][] puzzle, int spaceI, int spaceJ, int newSpaceI, int newSpaceJ) {
         puzzle[spaceI][spaceJ] = puzzle[newSpaceI][newSpaceJ];
         puzzle[newSpaceI][newSpaceJ] = 0;
+    }
+    
+     private int[][] makeMoveWithClone(int[][] puzzle, int spaceI, int spaceJ, int newSpaceI, int newSpaceJ) {
+        int[][] newPuzzle = cloneSquareMatrix(puzzle);
+         newPuzzle[spaceI][spaceJ] = puzzle[newSpaceI][newSpaceJ];
+        newPuzzle[newSpaceI][newSpaceJ] = 0;
+        return newPuzzle;
     }
 
     private void undoMove(int[][] puzzle, int spaceI, int spaceJ, int oldSpaceI, int oldSpaceJ) {

@@ -16,11 +16,31 @@ public class PuzzleNode {
         this.puzzle = puzzle;
     }
 
+    @Override
     public int hashCode() {
         int hash = 3;
         hash = 11 * hash + (this.puzzle != null ? calculateHashCodeForPuzzle() : 0);
         return hash;
     }
+
+    @Override
+    public boolean equals(Object otherObj) {
+
+        if (otherObj == this) {
+            return true;
+        }
+        PuzzleNode other = (PuzzleNode) otherObj;
+        for (int i = 0; i < getPuzzle().length; i++) {
+            for (int j = 0; j < getPuzzle().length; j++) {
+                int[][] otherPuzzle = other.getPuzzle();
+                if (this.getPuzzle()[i][j] != otherPuzzle[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 
     private int calculateHashCodeForPuzzle() {
         int result = 17;

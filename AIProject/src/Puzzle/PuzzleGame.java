@@ -43,14 +43,15 @@ public class PuzzleGame {
 
     public static void main(String[] args) {
                 
-        int puzzleNumber = 5;
+        int puzzleNumber = 6;
         Algorithm chosenAlgorithm = Algorithm.AStar;
 
         /*Astar Solver*/
         try {
             AStar.AStarGameSolver puzzleGame = new AStar.AStarGameSolver(get8Puzzle(puzzleNumber));
             puzzleGame.solveGame();
-            System.out.println("----------------------------------------------------------------------");
+         //
+             System.out.println("----------------------------------------------------------------------");
             /*IDAStar Solver*/
             IDAstar.IDAStar idaStar = new IDAstar.IDAStar(get8Puzzle(puzzleNumber));
             idaStar.solveGame();
