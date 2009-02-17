@@ -35,7 +35,63 @@ public class PuzzleGame {
     }
 
     public static void main(String[] args) {
+       
+        int puzzleNumber = 4;
+        Algorithm chosenAlgorithm = Algorithm.AStar;
+        
+        try {
+            switch(chosenAlgorithm){
+                case AStar:
+                 /*Astar Solver*/
+                   AStar.AStarGameSolver puzzleGame = new AStar.AStarGameSolver(get8Puzzle(puzzleNumber));
+                   puzzleGame.solveGame();              
+                    break;
+                case IDAStar:
+                    /*IDAStar Solver*/
+                    IDAstar.IDAStar idaStar = new IDAstar.IDAStar(get8Puzzle(puzzleNumber));
+                    idaStar.solveGame();
+                    break;                    
+            }                            
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
 
+
+    }
+    
+    public static int[][] get8Puzzle(int puzzleNumber){
+         int[][][] puzzels = {
+            //Puzzle 0
+            {   {6, 7, 0},
+                {2, 1, 3},
+                {5, 4, 8},                
+            },
+            //Puzzle 1
+            {   {8, 7, 6},
+                {0, 4, 1},
+                {2, 5, 3},                
+            },
+            //Puzzle 2
+            {   {8, 0, 6},
+                {5, 4, 7},
+                {2, 3, 1},
+            },          
+            //Puzzle 3
+            {   {8, 0, 6},
+                {5, 4, 7},
+                {2, 3, 1},
+            },
+            //Puzzle 4
+            {   {3, 7, 2},
+                {1, 8, 4},
+                {6, 0, 5},
+            }           
+        };             
+        return puzzels[puzzleNumber];    
+    }
+
+    public static int[][] get15Puzzle(int puzzleNumber){
+         
         int[][][] puzzels = {
             //Puzzle 0
             {{1, 9, 3, 7},
@@ -109,34 +165,12 @@ public class PuzzleGame {
              {4,5,6,7},
              {8,9,10,11},
              {12,13,14,15}
-            },
-            // Puzzle 12 - 8 Puzzle
-            {{6,7,0},
-             {2,1,3},
-             {5,4,8}             
-            }           
+            }
         };
-        int puzzleNumber = 12;
-        Algorithm chosenAlgorithm = Algorithm.AStar;
-        
-        try {
-            switch(chosenAlgorithm){
-                case AStar:
-                 /*Astar Solver*/
-                   AStar.AStarGameSolver puzzleGame = new AStar.AStarGameSolver(puzzels[puzzleNumber]);
-                   puzzleGame.solveGame();              
-                    break;
-                case IDAStar:
-                    /*IDAStar Solver*/
-                    IDAstar.IDAStar idaStar = new IDAstar.IDAStar(puzzels[puzzleNumber]);
-                    idaStar.solveGame();
-                    break;                    
-            }                            
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-
-
+    
+        return puzzels[puzzleNumber];    
     }
+    
 
 }
+
