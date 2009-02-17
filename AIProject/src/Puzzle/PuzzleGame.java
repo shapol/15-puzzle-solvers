@@ -1,5 +1,6 @@
 package Puzzle;
 
+
 public class PuzzleGame {
 
     public static final int gameSlotsNumber = 8; //15
@@ -13,7 +14,6 @@ public class PuzzleGame {
     };
     private static int[][][] manhatanDistance;
     
-
     static {
         manhatanDistance = new int[gameSlotsNumber + 1][puzzleDimension][puzzleDimension];
         for (int value = 0; value <= gameSlotsNumber; value++) {
@@ -42,8 +42,8 @@ public class PuzzleGame {
     }
 
     public static void main(String[] args) {
-
-        int puzzleNumber = 3;
+                
+        int puzzleNumber = 5;
         Algorithm chosenAlgorithm = Algorithm.AStar;
 
         /*Astar Solver*/
@@ -81,30 +81,40 @@ public class PuzzleGame {
 
     public static int[][] get8Puzzle(int puzzleNumber) {
         int[][][] puzzels = {
-            //Puzzle 0
+            //Puzzle 0 (24)
             {{6, 7, 0},
                 {2, 1, 3},
                 {5, 4, 8},
             },
-            //Puzzle 1
+            //Puzzle 1 (31)
             {{8, 7, 6},
                 {0, 4, 1},
                 {2, 5, 3},
-            },
-            //Puzzle 2
-            {{8, 0, 6},
-                {5, 4, 7},
-                {2, 3, 1},
-            },
-            //Puzzle 3
-            {{8, 0, 6},
-                {5, 4, 7},
-                {2, 3, 1},
-            },
-            //Puzzle 4
+            },                 
+            //Puzzle 2 (19)
             {{3, 7, 2},
                 {1, 8, 4},
                 {6, 0, 5},
+            },
+            //Puzzle 3 (18)
+            {{3, 7, 2},
+                {1, 0, 4},
+                {6, 8, 5},
+            },
+            //Puzzle 4 (20)
+            {{0, 5, 2},
+                {1, 7, 3},
+                {6, 8, 4},
+            },
+            //Puzzle 5 (12)
+            {{2, 4, 0},
+                {3, 1, 5},
+                {6, 7, 8},
+            },
+            //Puzzle 6 (3)
+            {{1, 2, 5},
+                {3, 4, 0},
+                {6, 7, 8},
             }
         };
         return puzzels[puzzleNumber];
