@@ -1,6 +1,8 @@
 package IDAstar;
 
 import java.awt.Point;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Vector;
 
 public class IDAStar {
@@ -12,6 +14,7 @@ public class IDAStar {
     private int toatlNumberOfNodesExpansions;
     private int parentSpaceI;
     private int parentSpaceJ;
+    private HashMap<PuzzleNode,Integer> _statesOccurences;
 
     public IDAStar(int[][] puzzle) throws Exception {
         puzzleDimension = Puzzle.PuzzleGame.puzzleDimension;
@@ -26,6 +29,7 @@ public class IDAStar {
         _isFinished = false;
         totalNumberOfNodes = 0;
         toatlNumberOfNodesExpansions = 0;
+        _statesOccurences = new HashMap<PuzzleNode,Integer>();
     }
 
     private Point getSpacePoint(int[][] puzzle) {
@@ -49,7 +53,8 @@ public class IDAStar {
 
     public void solveGame() {
         Point spacePoint = getSpacePoint(this.root);
-        System.out.println(IDAStarAlgorithm(this.root, spacePoint.x, spacePoint.y));
+        System.out.println(IDAStarAlgorithm(cloneSquareMatrix(this.root), spacePoint.x, spacePoint.y));
+       IDAStarAlgorithmWithDoubleVerticiesSaves(new PuzzleNode(cloneSquareMatrix(this.root)),spacePoint.x, spacePoint.y);
     }
 
     public int IDAStarAlgorithm(int[][] root, int spaceI, int spaceJ) {
@@ -76,7 +81,6 @@ public class IDAStar {
         }
         return -1;
     }
-
     public int IDAStartAuxiliary(int[][] puzzle, int spaceI, int spaceJ, int g, int threshold) {
 
         totalNumberOfNodes++;
@@ -114,7 +118,89 @@ public class IDAStar {
         }
         return min;
     }
+    
+     public int IDAStarAlgorithmWithDoubleVerticiesSaves(PuzzleNode root, int spaceI, int spaceJ) {
+        _isFinished = false;
+        int threshold = h(root.getPuzzle());
+        int temp;
+        long startAlgoDtime = System.currentTimeMillis();
+        while (!_isFinished && threshold < 100) {
+            System.out.println("(" + threshold + ")");
+            parentSpaceI = spaceI;
+            parentSpaceJ = spaceJ;
+            temp = IDAStartAuxiliaryWithDoubleVerticiesSaves(root, spaceI, spaceJ, 0, threshold);
+            System.out.println("Number of doubled/or more than doubled occurences for this iteration is "+getStatesOccurences());
+            if (_isFinished) {
+                long endAlgoTime = System.currentTimeMillis();
+                System.out.println("Time : " + (endAlgoTime - startAlgoDtime));
+                System.out.println("Total number of nodes : " + totalNumberOfNodes);
+                System.out.println("Total number of node expansions " + toatlNumberOfNodesExpansions);
+                return temp;
+            }
+            if (temp == -1) {
+                return -1;
+            }
+            threshold = temp;
+            _statesOccurences.clear();
+        }
+        return -1;
+    }
+    public int IDAStartAuxiliaryWithDoubleVerticiesSaves(PuzzleNode puzzle, int spaceI, int spaceJ, int g, int threshold) {
 
+        totalNumberOfNodes++;
+        Integer stateOccurence = _statesOccurences.get(puzzle);
+        if(stateOccurence!=null){
+             _statesOccurences.put(puzzle,stateOccurence+1);
+        }
+        else{
+             _statesOccurences.put(puzzle,1);
+        }
+       
+        if (h(puzzle.getPuzzle()) == 0) {
+            _isFinished = true;
+            return f(g, puzzle.getPuzzle());
+        }
+
+        if (f(g, puzzle.getPuzzle()) > threshold) {
+            return f(g, puzzle.getPuzzle());
+        }
+
+        int min = Integer.MAX_VALUE;
+        int temp;
+        Vector<Point> validSpacePoints = generateValidNodes(spaceI, spaceJ);
+        if (validSpacePoints.size() > 0) {
+            toatlNumberOfNodesExpansions++;
+        }
+        for (Point validSpacePoint : validSpacePoints) {
+            parentSpaceI = spaceI;
+            parentSpaceJ = spaceJ;
+
+            makeMove(puzzle.getPuzzle(), spaceI, spaceJ, validSpacePoint.x, validSpacePoint.y);
+            temp = IDAStartAuxiliaryWithDoubleVerticiesSaves(puzzle, validSpacePoint.x, validSpacePoint.y, (g + 1), threshold);
+            if (_isFinished) {
+                //        System.out.println(child);
+                //     System.out.println();
+                return temp;
+            }
+            if (temp < min) {
+                min = temp;
+            }
+            undoMove(puzzle.getPuzzle(), validSpacePoint.x, validSpacePoint.y, spaceI, spaceJ);
+        }
+        return min;
+    }
+    
+    private int getStatesOccurences(){
+        Iterator statesIter = _statesOccurences.values().iterator();
+        int result = 0;
+        Integer stateOccurence = null;
+        while(statesIter.hasNext()){
+            stateOccurence = (Integer)statesIter.next();
+            result += stateOccurence;
+        }
+        return result;
+    }
+    
     private Vector<Point> generateValidNodes(int spaceI, int spaceJ) {
 
         /*The SpaceCell can move either left , right , up , down*/
@@ -149,4 +235,17 @@ public class IDAStar {
         puzzle[spaceI][spaceJ] = puzzle[oldSpaceI][oldSpaceJ];
         puzzle[oldSpaceI][oldSpaceJ] = 0;
     }
+    
+     private int[][] cloneSquareMatrix(int[][] matrix) {
+        int[][] result = new int[matrix.length][matrix.length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix.length; j++) {
+                result[i][j] = matrix[i][j];
+            }
+        }
+        return result;
+    }
+
+
+    
 }
