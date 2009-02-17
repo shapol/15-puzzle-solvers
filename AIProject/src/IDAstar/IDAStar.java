@@ -20,14 +20,14 @@ import java.util.Vector;
 public class IDAStar {
 
     private int puzzleDimension; // The dimension of the puzzle    
- 
+
     private int[][] root; // The starting state of the algorithm.   
 
     // The space position of the parent state
     private int parentSpaceI;
-    private int parentSpaceJ;    
+    private int parentSpaceJ;
     public static boolean _isFinished; // is the algorithm has finished - meanining got to the goal node
-    
+
     /*Statistics variables */
     /****************************************************************************************/
     private int totalNumberOfNodes;
@@ -35,8 +35,8 @@ public class IDAStar {
     private HashMap<PuzzleNode, Integer> _statesOccurrence;
     private int numberOfDuplicates;
     private int currentDepth;
-    /****************************************************************************************/
 
+    /****************************************************************************************/
     public IDAStar(int[][] puzzle) throws Exception {
         puzzleDimension = Puzzle.PuzzleGame.puzzleDimension;
         if ((puzzle.length != puzzleDimension) | (puzzle[0].length != puzzleDimension)) {
@@ -47,7 +47,7 @@ public class IDAStar {
             throw new Exception("where is the space?  :-) ");
         }
         this.root = puzzle;
-        
+
         /*Statistics initialization*/
         _isFinished = false;
         totalNumberOfNodes = 0;
@@ -60,7 +60,7 @@ public class IDAStar {
     /**
      *  This function will calculate the cost function.
      * @param g - the number of moves made from the start state to the current position.
-
+    
      * @param puzzle the puzzle matrix
      * @return the cost of the current state.
      */
@@ -70,23 +70,22 @@ public class IDAStar {
     public int h(int[][] puzzle) {
         return Puzzle.PuzzleGame.getManahtanDistance(puzzle);
     }
- 
+
     public void solveGame() {
         Point spacePoint = PuzzleGame.getSpacePoint(this.root);
         IDAStarAlgorithm(PuzzleGame.cloneSquareMatrix(this.root), spacePoint.x, spacePoint.y);
-        
-        //Run this in order to save the duplicates also
-        //IDAStarAlgorithmWithDoubleVerticiesSaves(new PuzzleNode(cloneSquareMatrix(this.root)), spacePoint.x, spacePoint.y);
+
+    //Run this in order to save the duplicates also
+    //IDAStarAlgorithmWithDoubleVerticiesSaves(new PuzzleNode(cloneSquareMatrix(this.root)), spacePoint.x, spacePoint.y);
     }
 
     public int IDAStarAlgorithm(int[][] root, int spaceI, int spaceJ) {
         _isFinished = false;
         int threshold = h(root);
         int temp;
+        currentDepth = 0;
         long startAlgoDtime = System.currentTimeMillis();
-         currentDepth = 0;
         while (!_isFinished && threshold < 100) {
-          //  System.out.println("(" + threshold + ")");
             parentSpaceI = spaceI;
             parentSpaceJ = spaceJ;
             temp = IDAStartAuxiliary(root, spaceI, spaceJ, 0, threshold);
@@ -107,7 +106,7 @@ public class IDAStar {
     public int IDAStartAuxiliary(int[][] puzzle, int spaceI, int spaceJ, int g, int threshold) {
 
         totalNumberOfNodes++;
-        
+
         if (h(puzzle) == 0) {
             _isFinished = true;
             return f(g, puzzle);
@@ -128,17 +127,17 @@ public class IDAStar {
             parentSpaceJ = spaceJ;
 
             makeMove(puzzle, spaceI, spaceJ, validSpacePoint.x, validSpacePoint.y);
-             currentDepth++;
-             System.out.println(currentDepth);
+            currentDepth++;
+            System.out.println(currentDepth);
             temp = IDAStartAuxiliary(puzzle, validSpacePoint.x, validSpacePoint.y, (g + 1), threshold);
-             currentDepth--;
+            currentDepth--;
             if (_isFinished) {
                 return temp;
             }
             if (temp < min) {
                 min = temp;
             }
-             
+
             //undo move
             makeMove(puzzle, validSpacePoint.x, validSpacePoint.y, spaceI, spaceJ);
         }
@@ -216,7 +215,7 @@ public class IDAStar {
         }
         return min;
     }
-
+  
     private int getStatesOccurences() {
         Iterator statesIter = _statesOccurrence.values().iterator();
         int result = 0;
@@ -268,7 +267,6 @@ public class IDAStar {
         puzzle[spaceI][spaceJ] = puzzle[newSpaceI][newSpaceJ];
         puzzle[newSpaceI][newSpaceJ] = 0;
     }
-
     /**
      * This function will make a move on the puzzle.
      * notice that this function will return new cloned puzzle and that it will be used in the IDAStartAuxiliaryWithDoubleVerticiesSaves
@@ -279,6 +277,61 @@ public class IDAStar {
         newPuzzle[spaceI][spaceJ] = puzzle[newSpaceI][newSpaceJ];
         newPuzzle[newSpaceI][newSpaceJ] = 0;
         return newPuzzle;
-    }  
+    }
+
+    
+    /**
+     * This class will be used only for the statistics measurements. it will be used for saving the dupilcates states in an efficient way.
+     * 
+     * @author Tomer Peled & Al Yaros
+     */
+    public class PuzzleNode {
+
+        private int[][] puzzle;
+
+        public PuzzleNode(int[][] puzzle) {
+            this.puzzle = puzzle;
+        }
+
+        public int[][] getPuzzle() {
+            return puzzle;
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 3;
+            hash = 11 * hash + (this.puzzle != null ? calculateHashCodeForPuzzle() : 0);
+            return hash;
+        }
+        @Override
+        public boolean equals(Object otherObj) {
+
+            if (otherObj == this) {
+                return true;
+            }
+            PuzzleNode other = (PuzzleNode) otherObj;
+            for (int i = 0; i < getPuzzle().length; i++) {
+                for (int j = 0; j < getPuzzle().length; j++) {
+                    int[][] otherPuzzle = other.getPuzzle();
+                    if (this.getPuzzle()[i][j] != otherPuzzle[i][j]) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        private int calculateHashCodeForPuzzle() {
+            int result = 17;
+            int[] puzzleRaw;
+            for (int i = 0; i < puzzle.length; i++) {
+                puzzleRaw = puzzle[i];
+                for (int j = 0; j < puzzleRaw.length; j++) {
+                    result += result * 37 + puzzle[i][j];
+                }
+            }
+            return result;
+        }
+        
+    }
     
 }
