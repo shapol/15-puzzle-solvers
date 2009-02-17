@@ -54,6 +54,7 @@ public class AStarGameSolver {
             } else {
                 //expend not yet seen childs to open list.
                 LinkedList<PuzzleNode> childs = currSolutionNode.getMyChilds();
+                prevPos.add(currSolutionNode);
                 for (int i = 0; i < childs.size(); i++) {
                     openList.add(childs.get(i));
                     addedToOpenCounter++;

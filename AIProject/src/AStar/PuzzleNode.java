@@ -157,7 +157,7 @@ public class PuzzleNode {
 
         boolean isVisited = AStarGameSolver.prevPos.contains(this);
         if (!isVisited) {
-            AStarGameSolver.prevPos.add(this); /*Not visited Then add it And return False*/
+            //AStarGameSolver.prevPos.add(this); /*Not visited Then add it And return False*/
             return false;
         } else {
             return true; /*Visited Before*/

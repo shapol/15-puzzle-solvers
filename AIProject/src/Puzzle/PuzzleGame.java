@@ -191,7 +191,7 @@ public class PuzzleGame {
 
     public static void main(String[] args) {
 
-        int puzzleNumber = 6;
+        int puzzleNumber = 2;
 
         try {
             /*Astar Solver*/
