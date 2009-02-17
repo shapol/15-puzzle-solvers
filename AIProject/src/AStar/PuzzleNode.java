@@ -15,7 +15,7 @@ public class PuzzleNode {
 
     private LinkedList<Point> validMoves;   /*Space Cell can (Valid Move) move to any of this Points*/
 
-
+    
     public PuzzleNode(int[][] puzzle, PuzzleNode theParent, Point spaceCell) {
 
         /*Init The puzzle*/
@@ -77,14 +77,12 @@ public class PuzzleNode {
         }
         return true;
     }
-
     @Override
     public int hashCode() {
         int hash = 7;
         hash = 41 * hash + (this.puzzle != null ? calculateHashCodeForPuzzle() : 0);
         return hash;
     }
-
     private int calculateHashCodeForPuzzle() {
         int result = 17;
         int[] puzzleRaw;
@@ -96,11 +94,7 @@ public class PuzzleNode {
         }
         return result;
     }
-
-    public int[][] getPuzzle() {
-        return puzzle;
-    }
-
+    
     public int getNodeDepth() {
         int res = 0;
         PuzzleNode node = this;
@@ -110,7 +104,6 @@ public class PuzzleNode {
         }
         return res;
     }
-
     public int getMovesFromStart() {
         return movesFromStart;
     }
@@ -118,7 +111,6 @@ public class PuzzleNode {
     public LinkedList<Point> getValidMoves() {
         return validMoves;
     }
-
     private LinkedList<Point> generateValidMoves() {
 
         /*The SpaceCell can move either left , right , up , down*/
@@ -162,6 +154,9 @@ public class PuzzleNode {
         }
     }
     
+    public int[][] getPuzzle() {
+        return puzzle;
+    }    
     public PuzzleNode getTheParent() {
         return theParent;
     }

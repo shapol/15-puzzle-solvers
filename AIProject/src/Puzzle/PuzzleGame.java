@@ -3,17 +3,13 @@ package Puzzle;
 public class PuzzleGame {
 
     public static final int gameSlotsNumber = 8; //15
-
     public static int puzzleDimension = 3; //4
 
+    private static int[][][] manhatanDistance; // A three dimensional array of the manhattan distances    
 
-    public enum Algorithm {
-
-        AStar, IDAStar
-    };
-    private static int[][][] manhatanDistance;
-    
-
+    /**
+     * This static block is responsible for initializing the manhattan distance values for all the slots in all positions.
+     */
     static {
         manhatanDistance = new int[gameSlotsNumber + 1][puzzleDimension][puzzleDimension];
         for (int value = 0; value <= gameSlotsNumber; value++) {
@@ -25,6 +21,11 @@ public class PuzzleGame {
         }
     }
 
+    /**
+     * This function will return the Manhattan distance which is corrsesponding to the given puzzle.
+     * @param puzzle the puzzle matrix
+     * @return the manhattan distance
+     */
     public static int getManahtanDistance(int[][] puzzle) {
         int distance = 0;
         int[] puzzleRaw;
