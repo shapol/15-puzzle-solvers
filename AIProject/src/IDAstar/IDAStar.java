@@ -34,7 +34,8 @@ public class IDAStar {
     private int toatlNumberOfNodesExpansions;
     private HashMap<PuzzleNode, Integer> _statesOccurrence;
     private int numberOfDuplicates;
-    private int currentDepth;
+    private int currentDepth; // This variable will only be used for having information of the current space that the IDA* takes
+                                                                //    (the  stack size).
 
     /****************************************************************************************/
     public IDAStar(int[][] puzzle) throws Exception {
@@ -98,9 +99,10 @@ public class IDAStar {
             temp = IDAStartAuxiliary(root, spaceI, spaceJ, 0, threshold);
             if (_isFinished) {
                 long endAlgoTime = System.currentTimeMillis();
-                System.out.println("Time : " + (endAlgoTime - startAlgoDtime));
-                System.out.println("Total number of nodes : " + totalNumberOfNodes);
-                System.out.println("Total number of node expansions " + toatlNumberOfNodesExpansions);
+                System.out.println("Run Time : " + (endAlgoTime - startAlgoDtime)+" millisec");
+                System.out.println("Solution Depth: "+temp);
+                System.out.println("Number of Nodes That has Been expended: " + toatlNumberOfNodesExpansions);
+                System.out.println("Number of Nodes That has Been Generated:" + totalNumberOfNodes);                
                 return temp;
             }
             threshold = temp;
@@ -141,7 +143,6 @@ public class IDAStar {
 
             makeMove(puzzle, spaceI, spaceJ, validSpacePoint.x, validSpacePoint.y);
             currentDepth++;
-            System.out.println(currentDepth);
             temp = IDAStartAuxiliary(puzzle, validSpacePoint.x, validSpacePoint.y, (g + 1), threshold);
             currentDepth--;
             if (_isFinished) {

@@ -77,7 +77,7 @@ public class AStarGameSolver {
     private void printResultInfo(PuzzleNode resultNode) {
 
         long runTime = endTime - startTime;
-        System.out.println("Run Time: " + runTime + " miliSec");
+        System.out.println("Run Time: " + runTime + " millisec");
 
         if (resultNode == null) {
             System.out.println("No Solution Found");

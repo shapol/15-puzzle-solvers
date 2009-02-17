@@ -3,6 +3,12 @@ package AStar;
 import java.awt.Point;
 import java.util.LinkedList;
 
+/**
+ * This class presents a node in the search tree of the A* algortihm. A node is actually a state of the puzzle.
+ * it will be resposible for holding all the relevant information and to handle events such as expand nodes.
+ * 
+ * @author Tomer Peled & Al Yaros
+ */
 public class PuzzleNode {
 
     private PuzzleNode theParent = null; /*This Node Parent*/
@@ -15,7 +21,6 @@ public class PuzzleNode {
 
     private LinkedList<Point> validMoves;   /*Space Cell can (Valid Move) move to any of this Points*/
 
-    
     public PuzzleNode(int[][] puzzle, PuzzleNode theParent, Point spaceCell) {
 
         /*Init The puzzle*/
@@ -39,6 +44,11 @@ public class PuzzleNode {
         this.movesToGoal = getMovesToGoal();
     }
 
+    /**
+     * This function generates all the successors of the calling state.
+     * notice that it will return only valid states and states that weren't being visited before.
+     * @return LinkedList<PuzzleNode> - the list of all the legal states
+     */
     public LinkedList<PuzzleNode> getMyChilds() {
 
         LinkedList<PuzzleNode> res = new LinkedList<PuzzleNode>();
@@ -53,11 +63,7 @@ public class PuzzleNode {
     }
 
     public int getMovesToGoal() {
-        return getManahtanDistance(this);
-    }
-
-    private int getManahtanDistance(PuzzleNode node) {
-        return Puzzle.PuzzleGame.getManahtanDistance(node.getPuzzle());
+        return Puzzle.PuzzleGame.getManahtanDistance(this.puzzle);
     }
 
     @Override
@@ -111,6 +117,10 @@ public class PuzzleNode {
     public LinkedList<Point> getValidMoves() {
         return validMoves;
     }
+    /**
+     * This function will generate all the valid postions of the Space in the this puzzle, according to the puzzle game rules.
+     * @return LinkedList<Point> - list of valid points of spaces.
+     */
     private LinkedList<Point> generateValidMoves() {
 
         /*The SpaceCell can move either left , right , up , down*/

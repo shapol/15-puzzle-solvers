@@ -191,16 +191,21 @@ public class PuzzleGame {
 
     public static void main(String[] args) {
 
-        int puzzleNumber = 1;
+        int puzzleNumber = 6;
 
         try {
             /*Astar Solver*/
+            System.out.println("A*");
+            System.out.println("----------------------------------------------------------------------");
             AStar.AStarGameSolver puzzleGame = new AStar.AStarGameSolver(get8Puzzle(puzzleNumber));
             puzzleGame.solveGame();
             System.out.println("----------------------------------------------------------------------");
             /*IDAStar Solver*/
+             System.out.println("IDA*");
+            System.out.println("----------------------------------------------------------------------");
             IDAstar.IDAStar idaStar = new IDAstar.IDAStar(get8Puzzle(puzzleNumber));
             idaStar.solveGame();
+            System.out.println("----------------------------------------------------------------------");
         } catch (Exception e) {
             e.printStackTrace();
         }
