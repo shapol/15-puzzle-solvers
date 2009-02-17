@@ -1,5 +1,6 @@
 package IDAstar;
 
+import Puzzle.PuzzleGame;
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -41,7 +42,7 @@ public class IDAStar {
         if ((puzzle.length != puzzleDimension) | (puzzle[0].length != puzzleDimension)) {
             throw new Exception("InValid Game Width != " + puzzleDimension);
         }
-        Point spaceCell = getSpacePoint(puzzle);
+        Point spaceCell = PuzzleGame.getSpacePoint(puzzle);
         if (spaceCell == null) {
             throw new Exception("where is the space?  :-) ");
         }
@@ -57,30 +58,22 @@ public class IDAStar {
     }
 
     /**
-     * This function will return the position point of the space in the given puzzle
-     * @param puzzle a puzzle matrix
-     * @return the Point position of the space in the given puzzle
-     */
-    private Point getSpacePoint(int[][] puzzle) {
-        for (int i = 0; i < puzzleDimension; i++) {
-            for (int j = 0; j < puzzleDimension; j++) {
-                if (puzzle[i][j] == 0) {
-                    return new java.awt.Point(i, j);
-                }
-            }
-        }
-        return null;
-    }
+     *  This function will calculate the cost function.
+     * @param g - the number of moves made from the start state to the current position.
 
+     * @param puzzle the puzzle matrix
+     * @return the cost of the current state.
+     */
     public int f(int g, int[][] puzzle) {
         return g + h(puzzle);
     }
     public int h(int[][] puzzle) {
         return Puzzle.PuzzleGame.getManahtanDistance(puzzle);
     }
+ 
     public void solveGame() {
-        Point spacePoint = getSpacePoint(this.root);
-        IDAStarAlgorithm(cloneSquareMatrix(this.root), spacePoint.x, spacePoint.y);
+        Point spacePoint = PuzzleGame.getSpacePoint(this.root);
+        IDAStarAlgorithm(PuzzleGame.cloneSquareMatrix(this.root), spacePoint.x, spacePoint.y);
         
         //Run this in order to save the duplicates also
         //IDAStarAlgorithmWithDoubleVerticiesSaves(new PuzzleNode(cloneSquareMatrix(this.root)), spacePoint.x, spacePoint.y);
@@ -276,25 +269,16 @@ public class IDAStar {
         puzzle[newSpaceI][newSpaceJ] = 0;
     }
 
-    /*
+    /**
      * This function will make a move on the puzzle.
      * notice that this function will return new cloned puzzle and that it will be used in the IDAStartAuxiliaryWithDoubleVerticiesSaves
      *function.
      */
     private int[][] makeMoveWithClone(int[][] puzzle, int spaceI, int spaceJ, int newSpaceI, int newSpaceJ) {
-        int[][] newPuzzle = cloneSquareMatrix(puzzle);
+        int[][] newPuzzle = PuzzleGame.cloneSquareMatrix(puzzle);
         newPuzzle[spaceI][spaceJ] = puzzle[newSpaceI][newSpaceJ];
         newPuzzle[newSpaceI][newSpaceJ] = 0;
         return newPuzzle;
-    }
-
-    private int[][] cloneSquareMatrix(int[][] matrix) {
-        int[][] result = new int[matrix.length][matrix.length];
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix.length; j++) {
-                result[i][j] = matrix[i][j];
-            }
-        }
-        return result;
-    }
+    }  
+    
 }

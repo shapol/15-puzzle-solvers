@@ -140,7 +140,7 @@ public class PuzzleNode {
     }
 
     private int[][] makeMoveOnPuzzle(Point moveToMake) {
-        int[][] result = cloneSquareMatrix(this.getPuzzle());
+        int[][] result = Puzzle.PuzzleGame.cloneSquareMatrix(this.getPuzzle());
         result[spaceCell.x][spaceCell.y] = getPuzzle()[moveToMake.x][moveToMake.y];
         result[moveToMake.x][moveToMake.y] = 0;
         return result;
@@ -161,17 +161,7 @@ public class PuzzleNode {
             return true; /*Visited Before*/
         }
     }
-
-    private int[][] cloneSquareMatrix(int[][] matrix) {
-        int[][] result = new int[matrix.length][matrix.length];
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix.length; j++) {
-                result[i][j] = matrix[i][j];
-            }
-        }
-        return result;
-    }
-
+    
     public PuzzleNode getTheParent() {
         return theParent;
     }

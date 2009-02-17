@@ -1,5 +1,6 @@
 package AStar;
 
+import Puzzle.PuzzleGame;
 import java.awt.Point;
 import java.util.Collections;
 import java.util.Comparator;
@@ -28,7 +29,7 @@ public class AStarGameSolver {
         }
 
         /*Make Sure it has Space in it And Get It*/
-        Point spaceCell = getSpacePoint(puzzle);
+        Point spaceCell = PuzzleGame.getSpacePoint(puzzle);
         if (spaceCell == null) {
             throw new Exception("where is the space?  :-) ");
         }
@@ -66,17 +67,6 @@ public class AStarGameSolver {
 
     private boolean isDone(PuzzleNode currNode) {
         return (currNode.getMovesToGoal() == 0);
-    }
-
-    private Point getSpacePoint(int[][] puzzle) {
-        for (int i = 0; i < puzzleDimension; i++) {
-            for (int j = 0; j < puzzleDimension; j++) {
-                if (puzzle[i][j] == 0) {
-                    return new java.awt.Point(i, j);
-                }
-            }
-        }
-        return null;
     }
 
     private PuzzleNode openListExtrectMin() {

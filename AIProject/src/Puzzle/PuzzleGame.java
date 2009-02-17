@@ -1,6 +1,5 @@
 package Puzzle;
 
-
 public class PuzzleGame {
 
     public static final int gameSlotsNumber = 8; //15
@@ -14,6 +13,7 @@ public class PuzzleGame {
     };
     private static int[][][] manhatanDistance;
     
+
     static {
         manhatanDistance = new int[gameSlotsNumber + 1][puzzleDimension][puzzleDimension];
         for (int value = 0; value <= gameSlotsNumber; value++) {
@@ -41,23 +41,29 @@ public class PuzzleGame {
         return distance;
     }
 
-    public static void main(String[] args) {
-                
-        int puzzleNumber = 1;
-        Algorithm chosenAlgorithm = Algorithm.AStar;
-
-        /*Astar Solver*/
-        try {
-            AStar.AStarGameSolver puzzleGame = new AStar.AStarGameSolver(get8Puzzle(puzzleNumber));
-            puzzleGame.solveGame();
-         //
-             System.out.println("----------------------------------------------------------------------");
-            /*IDAStar Solver*/
-            IDAstar.IDAStar idaStar = new IDAstar.IDAStar(get8Puzzle(puzzleNumber));
-            idaStar.solveGame();
-        } catch (Exception e) {
-            e.printStackTrace();
+    /**
+     * This function will return the position point of the space in the given puzzle
+     * @param puzzle a puzzle matrix
+     * @return the Point position of the space in the given puzzle
+     */
+    public static java.awt.Point getSpacePoint(int[][] puzzle) {
+        for (int i = 0; i < puzzleDimension; i++) {
+            for (int j = 0; j < puzzleDimension; j++) {
+                if (puzzle[i][j] == 0) {
+                    return new java.awt.Point(i, j);
+                }
+            }
         }
+        return null;
+    }
+    public static int[][] cloneSquareMatrix(int[][] matrix) {
+        int[][] result = new int[matrix.length][matrix.length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix.length; j++) {
+                result[i][j] = matrix[i][j];
+            }
+        }
+        return result;
     }
 
     public static int[][] get8Puzzle(int puzzleNumber) {
@@ -71,7 +77,7 @@ public class PuzzleGame {
             {{8, 7, 6},
                 {0, 4, 1},
                 {2, 5, 3},
-            },                 
+            },
             //Puzzle 2 (19)
             {{3, 7, 2},
                 {1, 8, 4},
@@ -100,35 +106,34 @@ public class PuzzleGame {
         };
         return puzzels[puzzleNumber];
     }
-
     public static int[][] get15Puzzle(int puzzleNumber) {
 
         int[][][] puzzels = {
-            //Puzzle 0
+            // Puzzle 0
             {{1, 9, 3, 7},
                 {4, 0, 6, 15},
                 {5, 13, 2, 11},
                 {8, 12, 14, 10}
             },
-            //Puzzle 1
+            // Puzzle 1
             {{1, 3, 6, 7},
                 {13, 14, 9, 15},
                 {4, 0, 8, 11},
                 {12, 5, 2, 10}
             },
-            //Puzzle 2
+            // Puzzle 2
             {{1, 14, 6, 7},
                 {13, 15, 0, 11},
                 {4, 5, 3, 9},
                 {12, 2, 8, 10}
             },
-            //Puzzle 3
+            // Puzzle 3
             {{4, 8, 1, 15},
                 {13, 11, 10, 2},
                 {0, 12, 3, 14},
                 {5, 9, 7, 6}
             },
-            //85 - Puzzle 4 initial h=32, depth = 44 time
+            // Puzzle 4 initial h=32, depth = 44 time
             {{4, 7, 13, 10},
                 {1, 2, 9, 6},
                 {12, 8, 14, 5},
@@ -146,26 +151,26 @@ public class PuzzleGame {
                 {3, 10, 7, 5},
                 {11, 13, 6, 12}
             },
-            //55 - Puzzle 7   initial h= 29, depth =  41,  927,212.0 - number 4 at the site
+            // Puzzle 7   initial h= 29, depth =  41
             {
                 {13, 8, 14, 3},
                 {9, 1, 0, 7},
                 {15, 5, 4, 10},
                 {12, 2, 6, 11}
             },
-            //95 - Puzzle 8 - initial h = 34, depth = 50,  7,115,967.0
+            // Puzzle 8 - initial h = 34, depth = 50
             {{4, 3, 6, 13},
                 {7, 15, 9, 0},
                 {10, 5, 8, 11},
                 {2, 12, 1, 14}
             },
-            //88 - Puzzle 9 initial h = 43, depth = 65,  6,009,130,748.0
+            // Puzzle 9 initial h = 43, depth = 65
             {{15, 2, 12, 11},
                 {14, 13, 9, 5},
                 {1, 3, 8, 7},
                 {0, 10, 6, 4}
             },
-            //29 - Puzzle 10  h = 38,depth =  54,       117076111.0
+            // Puzzle 10  h = 38,depth =  54
             {{9, 8, 0, 2},
                 {15, 1, 4, 14},
                 {3, 10, 7, 5},
@@ -180,6 +185,23 @@ public class PuzzleGame {
         };
 
         return puzzels[puzzleNumber];
+    }
+
+    public static void main(String[] args) {
+
+        int puzzleNumber = 1;
+
+        try {
+            /*Astar Solver*/
+            AStar.AStarGameSolver puzzleGame = new AStar.AStarGameSolver(get8Puzzle(puzzleNumber));
+            puzzleGame.solveGame();
+            System.out.println("----------------------------------------------------------------------");
+            /*IDAStar Solver*/
+            IDAstar.IDAStar idaStar = new IDAstar.IDAStar(get8Puzzle(puzzleNumber));
+            idaStar.solveGame();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 
