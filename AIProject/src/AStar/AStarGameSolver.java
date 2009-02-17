@@ -40,6 +40,9 @@ public class AStarGameSolver {
         openList = new PriorityQueue<PuzzleNode>(100,new PuzzleNodeRelaxCompartor());
     }
 
+    /**
+     * This function will run the A* algorithm.
+     */
     public void solveGame() {
 
         startTime = System.currentTimeMillis();
@@ -65,12 +68,20 @@ public class AStarGameSolver {
         printResultInfo(null);
     }
 
+    /**
+     * This function will compare the given state to the goal node - by using the heuristic function of Manhattan distance
+     * @param currNode the current PuzzleNodw
+     * @return true if the current state is the goal state, false otherwise
+     */
     private boolean isDone(PuzzleNode currNode) {
         return (currNode.getMovesToGoal() == 0);
     }
 
+    /**
+     * This function will get the next state to handle.
+     * @return the minimum cost PuzzleNode which need to be handled
+     */
     private PuzzleNode openListExtrectMin() {
-        //Collections.sort(openList, new PuzzleNodeRelaxCompartor());
         PuzzleNode res = openList.remove();
         return res;
     }
@@ -98,6 +109,9 @@ public class AStarGameSolver {
         }
     }
 
+    /**
+     * This class is a Comparator class for comparing PuzzleNode according to their puzzle state
+     */
     private class PuzzleNodeRelaxCompartor implements Comparator {
 
         public int compare(Object first, Object second) {
