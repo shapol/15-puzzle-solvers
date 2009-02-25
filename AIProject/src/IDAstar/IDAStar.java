@@ -130,18 +130,18 @@ public class IDAStar {
 
         totalNumberOfNodes++;
 
-        /* Check to see if a solution has been found. */
-        if (h(puzzle) == 0) {
-            /* Solution found! Recurse back up the tree, ending all further search. */
-            _isFinished = true;
-            return f(g, puzzle);
-        }
-
         if (f(g, puzzle) > threshold) {
             /* State cannot be solved in this iteration. No further
              * search effort is needed. */
             return f(g, puzzle);
         }
+        
+        /* Check to see if a solution has been found. */
+        if (h(puzzle) == 0) {
+            /* Solution found! Recurse back up the tree, ending all further search. */
+            _isFinished = true;
+            return f(g, puzzle);
+        }        
 
         int min = Integer.MAX_VALUE;
         int temp;
@@ -221,15 +221,15 @@ public class IDAStar {
         } else {
             _statesOccurrence.put(puzzle, 1);
         }
+        
+         if (f(g, puzzle.getPuzzle()) > threshold) {
+            return f(g, puzzle.getPuzzle());
+        }
 
         if (h(puzzle.getPuzzle()) == 0) {
             _isFinished = true;
             return f(g, puzzle.getPuzzle());
-        }
-
-        if (f(g, puzzle.getPuzzle()) > threshold) {
-            return f(g, puzzle.getPuzzle());
-        }
+        }       
 
         int min = Integer.MAX_VALUE;
         int temp;
