@@ -50,6 +50,7 @@ public class AStarGameSolver {
         addedToOpenCounter++;
         while (openList.size() > 0) {
             PuzzleNode currSolutionNode = openListExtrectMin();
+            //System.out.println(openList.size()+prevPos.size());
             if (isDone(currSolutionNode)) {
                 endTime = System.currentTimeMillis();
                 printResultInfo(currSolutionNode);
@@ -125,10 +126,22 @@ public class AStarGameSolver {
             if (firstValue < secondValue) {
                 return -1;
             }
+            
+            //return 0;
+            /* if tie then return  the one with bigger G (Steps to Here) Or (Eqviv) the Lowest H*/
+            if (firstValue==secondValue)
+            {
+                if (((PuzzleNode) first).getMovesFromStart() >  ((PuzzleNode) second).getMovesFromStart())
+                {
+                    return -1;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
             return 0;
         }
-    }  
-
-            
+    }             
 }//End of AStarGameSolver Class
 
